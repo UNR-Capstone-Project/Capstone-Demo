@@ -49,10 +49,8 @@ public class Player : MonoBehaviour
         if (Mathf.Abs(input.x) > 0)
         {
             Vector3 currentScale = playerSprite.transform.localScale;
-            currentScale.x = Mathf.Sign(input.x) * Mathf.Abs(currentScale.x);
+            currentScale.x = -Mathf.Sign(input.x) * Mathf.Abs(currentScale.x);
             playerSprite.transform.localScale = currentScale;
         }
-
-        //Control Sprite
     }
 }

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
+    public bool lockZRotation = false;
+
     private Transform cameraPos;
 
     void Start()
@@ -18,6 +20,15 @@ public class Billboard : MonoBehaviour
 
     void LateUpdate()
     {
-        transform.LookAt(cameraPos.position);
+        if (lockZRotation)
+        {
+            float cameraXRotation = cameraPos.rotation.eulerAngles.x;
+            float cameraYRotation = cameraPos.rotation.eulerAngles.y;
+            transform.rotation = Quaternion.Euler(cameraXRotation, cameraYRotation, 0f);
+        }
+        else
+        {
+            transform.LookAt(transform.position + (transform.position - cameraPos.position)); //flip z-axis to face camera
+        }
     }
 }
