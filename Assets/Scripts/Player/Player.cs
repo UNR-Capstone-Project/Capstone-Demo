@@ -10,12 +10,14 @@ public class Player : MonoBehaviour
 
     private CharacterController characterController;
     private InputAction moveAction;
+    private Animator playerAnimator;
     private float vSpeed;
     private Quaternion playerRotation;
 
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        playerAnimator = playerSprite.GetComponent<Animator>();
 
         moveAction = new InputAction(type: InputActionType.Value);
         moveAction.AddCompositeBinding("2DVector")
@@ -51,6 +53,15 @@ public class Player : MonoBehaviour
             Vector3 currentScale = playerSprite.transform.localScale;
             currentScale.x = Mathf.Sign(input.x) * Mathf.Abs(currentScale.x);
             playerSprite.transform.localScale = currentScale;
+        }
+
+        if (input.x != 0 || input.y != 0) //Player is running
+        {
+            playerAnimator.SetBool("isRunning", true);
+        }
+        else
+        {
+            playerAnimator.SetBool("isRunning", false);
         }
     }
 }
