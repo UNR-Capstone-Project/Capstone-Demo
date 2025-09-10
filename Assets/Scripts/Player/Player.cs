@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public float playerSpeed = 5f;
     public float gravityStrength = 9.8f;
+    public float playerHealth = 10f;
 
     public GameObject playerSprite;
     public GameObject fireballPrefab;
@@ -93,5 +94,10 @@ public class Player : MonoBehaviour
             GameObject fireballInstance = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
             fireballInstance.GetComponent<ProjectileAttack>().setProjectileDirection(projectileDirection);
         }
+    }
+
+    public void takeDamage(float damageAmount)
+    {
+        playerHealth -= damageAmount;
     }
 }
