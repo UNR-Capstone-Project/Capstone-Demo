@@ -1,6 +1,7 @@
 using Mono.Cecil.Cil;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.InputSystem.XR.Haptics;
 using UnityEngine.Windows;
 
@@ -11,6 +12,7 @@ public class Enemy : MonoBehaviour
     public float enemySpeed = 2f;
     public float detectPlayerRadius = 10f;
     public float knockBackDuration = 0.2f;
+    public Color flashColor = Color.red;
 
     private GameObject playerTarget;
     private CharacterController characterController;
@@ -19,6 +21,8 @@ public class Enemy : MonoBehaviour
     private float knockForce;
     private Vector3 knockDir;
     private float knockTimer;
+    private Color originalColor;
+    private float flashDuration = 0.2f;
 
     private enum ENEMY_STATE
     {
@@ -41,6 +45,7 @@ public class Enemy : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         enemySprite = GetComponentInChildren<SpriteRenderer>();
+        originalColor = enemySprite.material.GetColor("_TintColor");
     }
 
     void Update()
@@ -137,6 +142,15 @@ public class Enemy : MonoBehaviour
     public void takeDamage(float damageAmount)
     {
         enemyHealth -= damageAmount;
+        StopAllCoroutines();
+        StartCoroutine(flashEnemy());
+    }
+
+    IEnumerator flashEnemy()
+    {
+        enemySprite.material.SetColor("_TintColor", flashColor);
+        yield return new WaitForSeconds(flashDuration);
+        enemySprite.material.SetColor("_TintColor", originalColor);
     }
 
     public void takeKnockBack(Vector3 knockDir, float knockForce)
