@@ -177,7 +177,8 @@ MonoBehaviour:
   playerSpeed: 4
   gravityStrength: 9.8
   playerHealth: 10
-  playerSprite: {fileID: 4323622196322604754}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  playerSprite: {fileID: 6708799519748724713}
   fireballPrefab: {fileID: 2607949553819214744, guid: ec973f6f5bbe9ed4399b6611ce554980, type: 3}
 --- !u!143 &1170684511954932438
 CharacterController:

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
@@ -7,16 +8,20 @@ public class Player : MonoBehaviour
     public float playerSpeed = 5f;
     public float gravityStrength = 9.8f;
     public float playerHealth = 10f;
-
+    public Color flashColor = Color.red;
     public GameObject playerSprite;
     public GameObject fireballPrefab;
 
     private CharacterController characterController;
     private Animator playerAnimator;
+    public SpriteRenderer playerSpriteRenderer;
 
     private InputAction moveAction;
     private InputAction leftClickAction;
     private float vSpeed;
+
+    private Color originalColor;
+    private float flashDuration = 0.2f;
 
     private Quaternion playerRotation;
 
@@ -24,6 +29,8 @@ public class Player : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         playerAnimator = playerSprite.GetComponent<Animator>();
+        playerSpriteRenderer = playerSprite.GetComponent<SpriteRenderer>();
+        originalColor = playerSpriteRenderer.material.GetColor("_TintColor");
 
         leftClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/leftButton");
         leftClickAction.performed += mouseLeftClick;
@@ -99,5 +106,14 @@ public class Player : MonoBehaviour
     public void takeDamage(float damageAmount)
     {
         playerHealth -= damageAmount;
+        StopCoroutine(flashPlayer());
+        StartCoroutine(flashPlayer());
+    }
+
+    IEnumerator flashPlayer()
+    {
+        playerSpriteRenderer.material.SetColor("_TintColor", flashColor);
+        yield return new WaitForSeconds(flashDuration);
+        playerSpriteRenderer.material.SetColor("_TintColor", originalColor);
     }
 }

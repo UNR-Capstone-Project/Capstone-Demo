@@ -180,7 +180,7 @@ public class Enemy : MonoBehaviour
     public void takeDamage(float damageAmount)
     {
         enemyHealth -= damageAmount;
-        StopAllCoroutines();
+        StopCoroutine(flashEnemy());
         StartCoroutine(flashEnemy());
     }
 
