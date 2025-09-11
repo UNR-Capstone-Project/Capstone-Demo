@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2278171362030799934}
   - component: {fileID: 4444253750416185779}
   - component: {fileID: 7439602437197536035}
-  m_Layer: 0
+  - component: {fileID: 5983872728584852824}
+  m_Layer: 6
   m_Name: Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,6 +72,33 @@ MonoBehaviour:
   projectileDamage: 10
   knockForce: 5
   destroyParticlePrefab: {fileID: 8653895834777587694, guid: 54c60506412377741a30233dd16c7774, type: 3}
+--- !u!54 &5983872728584852824
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2607949553819214744}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3974701700023349572
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,7 +110,7 @@ GameObject:
   - component: {fileID: 8266445597724726044}
   - component: {fileID: 5760191000280012249}
   - component: {fileID: 1917464142303228550}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
