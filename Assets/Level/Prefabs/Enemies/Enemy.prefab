@@ -74,7 +74,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyDamage: 10
   enemyHealth: 50
-  enemySpeed: 2
+  enemySpeed: 2.6
   detectPlayerRadius: 10
   knockBackDuration: 0.2
   flashColor: {r: 1, g: 0, b: 0, a: 1}
