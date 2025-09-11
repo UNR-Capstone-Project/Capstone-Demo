@@ -8,11 +8,13 @@ using UnityEngine.Windows;
 public class Enemy : MonoBehaviour
 {
     public float enemyDamage = 10f;
+    public float enemyAttackWait = 2f;
     public float enemyHealth = 10f;
     public float enemySpeed = 2f;
     public float detectPlayerRadius = 10f;
     public float knockBackDuration = 0.2f;
     public Color flashColor = Color.red;
+    public GameObject attackEffect;
 
     private GameObject playerTarget;
     private CharacterController characterController;
@@ -23,6 +25,7 @@ public class Enemy : MonoBehaviour
     private float knockTimer;
     private Color originalColor;
     private float flashDuration = 0.2f;
+    private bool isAttacking = false;
 
     private enum ENEMY_STATE
     {
@@ -46,6 +49,22 @@ public class Enemy : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         enemySprite = GetComponentInChildren<SpriteRenderer>();
         originalColor = enemySprite.material.GetColor("_TintColor");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            switchState(ENEMY_STATE.ATTACK);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            switchState(ENEMY_STATE.CHASE);
+        }
     }
 
     void Update()
@@ -124,7 +143,26 @@ public class Enemy : MonoBehaviour
 
     private void EnemyAttack()
     {
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            StartCoroutine(attackPlayer());
+        }
+    }
 
+    IEnumerator attackPlayer()
+    {
+        GameObject player = GameObject.Find("Player");
+
+        if (player != null)
+        {
+            player.GetComponent<Player>().takeDamage(enemyDamage);
+            GameObject attackEffectInstance = Instantiate(attackEffect, transform.position, Quaternion.identity);
+        }
+
+        yield return new WaitForSeconds(enemyAttackWait);
+
+        isAttacking = false;
     }
 
     private void EnemyKnockBack()
