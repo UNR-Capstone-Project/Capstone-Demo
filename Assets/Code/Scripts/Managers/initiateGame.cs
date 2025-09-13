@@ -30,13 +30,13 @@ public class initiateGame : MonoBehaviour
 
     private void createObjects()
     {
-        Debug.Log("Function here will be rewritten later if needing to intialize 3rd party servics/other services etc");
+        Debug.Log("Function here will be rewritten later if needing to intialize 3rd party servics/other services etc. Or tweak object settings after instantiation.");
     }
 
     private void backgroundGamePreparations()
     {
         
-        Debug.Log("Function here will be rewritten later when needing to load heavy objects async like through Resources, Asset Bundles, or Addressables");
+        Debug.Log("Function here will be rewritten later when needing to load heavy objects async like through Resources, Asset Bundles, or Addressables. Or to move positions of objects around or things of that nature. ");
     }
 
 }

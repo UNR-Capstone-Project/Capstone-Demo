@@ -154,7 +154,7 @@ Transform:
   m_GameObject: {fileID: 2428720641269041060}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 58.14, y: 1.304, z: 24.32}
+  m_LocalPosition: {x: 0, y: 1.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -178,8 +178,9 @@ MonoBehaviour:
   gravityStrength: 9.8
   playerHealth: 10
   flashColor: {r: 1, g: 0, b: 0, a: 1}
-  playerSprite: {fileID: 6708799519748724713}
+  playerSprite: {fileID: 4323622196322604754}
   fireballPrefab: {fileID: 2607949553819214744, guid: ec973f6f5bbe9ed4399b6611ce554980, type: 3}
+  playerSpriteRenderer: {fileID: 0}
 --- !u!143 &1170684511954932438
 CharacterController:
   m_ObjectHideFlags: 0
@@ -233,7 +234,7 @@ Transform:
   m_GameObject: {fileID: 4323622196322604754}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00000047684, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.043720424, y: 0.043720424, z: 0.04372043}
   m_ConstrainProportionsScale: 0
   m_Children: []

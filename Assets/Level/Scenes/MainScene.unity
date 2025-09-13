@@ -148,11 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bab85ac6c262b040a40146219b30577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::initiateGame
-  Ground: {fileID: 0}
-  mainCamera: {fileID: 0}
-  main3DVolume: {fileID: 0}
-  mainDirectionalLight: {fileID: 0}
-  mainPlayer: {fileID: 0}
+  Ground: {fileID: 8101832517977541958, guid: 5f214e398f4a7fa46a32a2c9b01ff612, type: 3}
+  mainCamera: {fileID: 2495053741683933374, guid: ba0fb405a602f744598916e149c1f0c3, type: 3}
+  main3DVolume: {fileID: 1990490750618901672, guid: 9107065a5b8a431458851ec84ae3d39a, type: 3}
+  mainDirectionalLight: {fileID: 1688765767307564418, guid: 5016993ecd8495f45b012622aa3c529b, type: 3}
+  mainPlayer: {fileID: 2428720641269041060, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
 --- !u!4 &1270476863
 Transform:
   m_ObjectHideFlags: 0
