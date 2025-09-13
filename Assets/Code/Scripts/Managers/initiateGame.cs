@@ -9,6 +9,7 @@ public class initiateGame : MonoBehaviour
     [SerializeField] private Volume main3DVolume;
     [SerializeField] private Light mainDirectionalLight;
     [SerializeField] private GameObject mainPlayer;
+    [SerializeField] private GameObject simpleRock;
 
     //load all relevant data at start of game
     public void Start()
@@ -22,10 +23,11 @@ public class initiateGame : MonoBehaviour
     {
         //bind objects to prefabs
         Instantiate(Ground);
+        Instantiate(mainPlayer);
         Instantiate(mainCamera);
         Instantiate(main3DVolume);
         Instantiate(mainDirectionalLight);
-        Instantiate(mainPlayer);
+        Instantiate(simpleRock);
     }
 
     private void createObjects()
