@@ -153,6 +153,7 @@ MonoBehaviour:
   main3DVolume: {fileID: 1990490750618901672, guid: 9107065a5b8a431458851ec84ae3d39a, type: 3}
   mainDirectionalLight: {fileID: 1688765767307564418, guid: 5016993ecd8495f45b012622aa3c529b, type: 3}
   mainPlayer: {fileID: 2428720641269041060, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
+  simpleRock: {fileID: 2675085858241994003, guid: 9c4a615d0d013f74fa6f4bb74827a80e, type: 3}
 --- !u!4 &1270476863
 Transform:
   m_ObjectHideFlags: 0

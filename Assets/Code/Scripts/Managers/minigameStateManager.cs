@@ -4,7 +4,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "minigameStateManager", menuName = "Scriptable Objects/minigameStateManager")]
 public class minigameStateManager : ScriptableObject
 {
-    private string currentMinigame = "drums";
+    public enum instruments
+    {
+        Drums,
+        Clarinet,
+        Violin
+    }
+
+    private instruments currentMinigame = instruments.Drums;
     private bool onCooldown = false;
 
     //in seconds
@@ -12,16 +19,9 @@ public class minigameStateManager : ScriptableObject
     private float cooldownTime = 20f;
     private float slowdownFactor = 0.8f;
 
-    public void changeMinigame(string newMinigame)
+    public void changeMinigame(instruments newInstrument)
     {
-        if (newMinigame == "Drums")
-        {
-            currentMinigame = "drums";
-        }
-        else
-        {
-            Debug.Log("New minigame entered in does not match any existing minigames");
-        }
+        currentMinigame = newInstrument;
     }
 
     public void changeCooldown()

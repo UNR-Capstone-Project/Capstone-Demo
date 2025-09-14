@@ -11,6 +11,10 @@ public class initiateGame : MonoBehaviour
     [SerializeField] private GameObject mainPlayer;
     [SerializeField] private GameObject simpleRock;
 
+    [SerializeField] private GameObject musicManagerPrefab;
+    [SerializeField] private GameObject musicPlayerPrefab;
+    [SerializeField] private musicEvent testSong;
+
     //load all relevant data at start of game
     public void Start()
     {
@@ -28,6 +32,12 @@ public class initiateGame : MonoBehaviour
         Instantiate(main3DVolume);
         Instantiate(mainDirectionalLight);
         Instantiate(simpleRock);
+
+        Instantiate(musicManagerPrefab);
+        musicManagerPrefab.GetComponent<musicManager>();
+
+        Instantiate(musicPlayerPrefab);
+        musicPlayerPrefab.GetComponent<musicPlayer>();
     }
 
     private void createObjects()
