@@ -9,9 +9,11 @@ public class musicManager : ScriptableObject
     [SerializeField] private musicPlayer currPlayer;
     [SerializeField] private float crossfadeTime = 0.5f;
 
+
     public void playSong(musicEvent s)
     {
-        foreach (musicPlayer Player in activePlayers) {
+        foreach (musicPlayer Player in activePlayers)
+        {
             if (Player.publicSong == s)
             {
                 Player.play();
@@ -26,7 +28,8 @@ public class musicManager : ScriptableObject
 
     public void stopSong(musicEvent s)
     {
-        foreach (musicPlayer Player in activePlayers) {
+        foreach (musicPlayer Player in activePlayers)
+        {
             if (Player.publicSong == s)
             {
                 Player.stop();
@@ -39,13 +42,13 @@ public class musicManager : ScriptableObject
         p.stop();
     }
 
-    public void switchSong(musicEvent newSong)
-    {
-
-    }
-
     public void stopAllSongs()
     {
-        
+        foreach (musicPlayer Player in activePlayers)
+        {
+            Player.stop();
+        }
     }
+    
+    
 }
