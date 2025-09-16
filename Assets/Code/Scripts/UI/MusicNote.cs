@@ -16,17 +16,17 @@ public class MusicNote : MonoBehaviour
         {
             Debug.Log("Note was successfully held for: " + hitTime.ToString() + " seconds.");
             StopAllCoroutines();
-            StartCoroutine(FadeDestroy(0.1f));
+            StartCoroutine(FadeDestroy(0.1f, Color.green));
             isFading = true;
         }
     }
 
     public void setDestroyTimer(float destroyTime)
     {
-        StartCoroutine(FadeDestroy(destroyTime));
+        StartCoroutine(FadeDestroy(destroyTime, Color.red));
     }
 
-    private IEnumerator FadeDestroy(float destroyTime)
+    private IEnumerator FadeDestroy(float destroyTime, Color newColor)
     {
         yield return new WaitForSeconds(destroyTime);
 
@@ -38,7 +38,11 @@ public class MusicNote : MonoBehaviour
         while (time < fadeDuration)
         {
             float alpha = Mathf.Lerp(1f, 0f, time / fadeDuration);
-            UIImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            float newColorR = Mathf.Lerp(originalColor.r, newColor.r, time / fadeDuration);
+            float newColorG = Mathf.Lerp(originalColor.g, newColor.g, time / fadeDuration);
+            float newColorB = Mathf.Lerp(originalColor.b, newColor.b, time / fadeDuration);
+
+            UIImage.color = new Color(newColorR, newColorG, newColorB, alpha);
             time += Time.deltaTime;
 
             yield return null;
