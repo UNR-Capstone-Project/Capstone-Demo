@@ -24,7 +24,7 @@ public class MusicManager : MonoBehaviour
 
     private const float tempo = 60f; //Tempo is measured in beats per minute
     private static float beat = 60f / tempo;
-    
+
     private float currentTrackTime = -reactionTime; //Start negative in case a note is played at time 0 seconds in the song!
     private int noteCount = 0;
 
@@ -81,17 +81,17 @@ public class MusicManager : MonoBehaviour
             this.onset = onset;
         }
     }
-    
+
     void Start()
     {
         trackTimeComponent = GetComponentInChildren<TextMeshProUGUI>();
 
         song = new note[3]; //A song with 3 total notes.
         song[0] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 2f);
-        song[1] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 3f);
-        song[2] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 4f);
+        song[1] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 5f);
+        song[2] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 8f);
     }
-    
+
     void Update()
     {
         currentTrackTime += Time.deltaTime;
@@ -131,10 +131,13 @@ public class MusicManager : MonoBehaviour
 
         GameObject spawnedNote = Instantiate(notePrefab, parentMask.transform);
 
-        float maskWidth = parentMask.GetComponent<RectTransform>().rect.width / 2;
-        Vector3 startNotePos = new Vector3(-maskWidth, 0f, 0f);
-        Vector3 endNotePos = new Vector3(maskWidth, 0f, 0f);
+        float maskWidth = parentMask.GetComponent<RectTransform>().rect.width;
+        Vector3 startNotePos = new Vector3(-maskWidth / 2, 0f, 0f);
+        Vector3 endNotePos = new Vector3(maskWidth / 2, 0f, 0f);
+
         spawnedNote.transform.localPosition = startNotePos;
+        spawnedNote.GetComponent<MusicNote>().setNoteSize(currentNote.duration, maskWidth / timeWindow); //maskWidth / timeWindow gives the relative size of one second
+        spawnedNote.GetComponent<MusicNote>().setDestroyTimer(timeWindow);
 
         StartCoroutine(LerpNotePosition(spawnedNote, startNotePos, endNotePos));
     }
@@ -147,7 +150,7 @@ public class MusicManager : MonoBehaviour
         {
             noteObj.transform.localPosition = Vector3.Lerp(startPos, endPos, elapsed / timeWindow);
             elapsed += Time.deltaTime;
-            yield return null; 
+            yield return null;
         }
 
         noteObj.transform.localPosition = endPos;
