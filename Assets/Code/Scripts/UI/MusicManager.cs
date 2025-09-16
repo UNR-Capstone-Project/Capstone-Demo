@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,13 +15,17 @@ using UnityEngine.UIElements;
 
 public class MusicManager : MonoBehaviour
 {
-    public const float timeWindow = 6f; //How many seconds are centering the surrounding the current track time of the song that are previewed within the minigame. Essentially your "view" of the current song.
+    public GameObject notePrefab;
+    public GameObject parentMask;
+    private TextMeshProUGUI trackTimeComponent;
+
+    public const float timeWindow = 4f; //How many seconds are centering the surrounding the current track time of the song that are previewed within the minigame. Essentially your "view" of the current song.
     public static float reactionTime = timeWindow / 2; //Time in seconds that a note will spawn before reaching its onset time.
 
     private const float tempo = 60f; //Tempo is measured in beats per minute
     private static float beat = 60f / tempo;
     
-    private float currentTrackTime = 0f;
+    private float currentTrackTime = -reactionTime; //Start negative in case a note is played at time 0 seconds in the song!
     private int noteCount = 0;
 
     private note[] song;
@@ -77,8 +84,12 @@ public class MusicManager : MonoBehaviour
     
     void Start()
     {
+        trackTimeComponent = GetComponentInChildren<TextMeshProUGUI>();
+
         song = new note[3]; //A song with 3 total notes.
-        song[0] = new note (NOTE_NAME.QuarterNote, NOTE_PITCH.A, 1.26f);
+        song[0] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 2f);
+        song[1] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 3f);
+        song[2] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 4f);
     }
     
     void Update()
@@ -86,13 +97,21 @@ public class MusicManager : MonoBehaviour
         currentTrackTime += Time.deltaTime;
         //ISSUE: To sync with audio use audioSource.time; instead!
 
+        if (currentTrackTime >= 0)
+        {
+            int minutes = Mathf.FloorToInt(currentTrackTime / 60);
+            int seconds = Mathf.FloorToInt(currentTrackTime % 60);
+
+            trackTimeComponent.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
+
         int noteCachedAmount = 4; //How many notes can be spawned simultaneously.
         int maxCachedAmount = Mathf.Min(noteCount + noteCachedAmount, song.Length);
 
         for (int i = noteCount; i < maxCachedAmount; i++)
         { //Cache reduces looping for songs with many notes.
             float spawnNoteTime = song[i].onset - reactionTime;
-            float tolerance = 0.01f;
+            float tolerance = 0.1f;
 
             if (currentTrackTime >= spawnNoteTime && currentTrackTime < spawnNoteTime + tolerance)
             {
@@ -107,5 +126,30 @@ public class MusicManager : MonoBehaviour
         //Spawn note here!
         //Note must positionally reach the end of the visible window in "timeWindow" seconds.
         //Basically Lerp the notes position by a linear factor to the end.
+        //Spawn position.y would be controlled by the pitch!
+        Debug.Log("Note has been spawned!");
+
+        GameObject spawnedNote = Instantiate(notePrefab, parentMask.transform);
+
+        float maskWidth = parentMask.GetComponent<RectTransform>().rect.width / 2;
+        Vector3 startNotePos = new Vector3(-maskWidth, 0f, 0f);
+        Vector3 endNotePos = new Vector3(maskWidth, 0f, 0f);
+        spawnedNote.transform.localPosition = startNotePos;
+
+        StartCoroutine(LerpNotePosition(spawnedNote, startNotePos, endNotePos));
+    }
+
+    IEnumerator LerpNotePosition(GameObject noteObj, Vector3 startPos, Vector3 endPos)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < timeWindow)
+        {
+            noteObj.transform.localPosition = Vector3.Lerp(startPos, endPos, elapsed / timeWindow);
+            elapsed += Time.deltaTime;
+            yield return null; 
+        }
+
+        noteObj.transform.localPosition = endPos;
     }
 }
