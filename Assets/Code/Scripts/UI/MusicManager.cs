@@ -148,6 +148,7 @@ public class MusicManager : MonoBehaviour
 
         while (elapsed < timeWindow)
         {
+            if (noteObj == null) { yield break; }
             noteObj.transform.localPosition = Vector3.Lerp(startPos, endPos, elapsed / timeWindow);
             elapsed += Time.deltaTime;
             yield return null;
