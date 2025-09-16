@@ -19,10 +19,10 @@ public class MusicManager : MonoBehaviour
     public GameObject parentMask;
     private TextMeshProUGUI trackTimeComponent;
 
-    public const float timeWindow = 4f; //How many seconds are centering the surrounding the current track time of the song that are previewed within the minigame. Essentially your "view" of the current song.
+    public const float timeWindow = 8f; //How many seconds are centering the surrounding the current track time of the song that are previewed within the minigame. Essentially your "view" of the current song.
     public static float reactionTime = timeWindow / 2; //Time in seconds that a note will spawn before reaching its onset time.
 
-    private const float tempo = 60f; //Tempo is measured in beats per minute
+    private const float tempo = 85f; //Tempo is measured in beats per minute
     private static float beat = 60f / tempo;
 
     private float currentTrackTime = -reactionTime; //Start negative in case a note is played at time 0 seconds in the song!
@@ -86,10 +86,12 @@ public class MusicManager : MonoBehaviour
     {
         trackTimeComponent = GetComponentInChildren<TextMeshProUGUI>();
 
-        song = new note[3]; //A song with 3 total notes.
-        song[0] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 2f);
-        song[1] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 5f);
-        song[2] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 8f);
+        song = new note[5]; //A song with 3 total notes.
+        song[0] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 0f);
+        song[1] = new note(NOTE_NAME.WholeNote, NOTE_PITCH.G, 2f);
+        song[2] = new note(NOTE_NAME.EighthNote, NOTE_PITCH.AFlat, 8f);
+        song[3] = new note(NOTE_NAME.HalfNote, NOTE_PITCH.BFlat, 9f);
+        song[4] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.D, 10f);
     }
 
     void Update()
@@ -136,7 +138,7 @@ public class MusicManager : MonoBehaviour
         Vector3 endNotePos = new Vector3(maskWidth / 2, 0f, 0f);
 
         spawnedNote.transform.localPosition = startNotePos;
-        spawnedNote.GetComponent<MusicNote>().setNoteSize(currentNote.duration, maskWidth / timeWindow); //maskWidth / timeWindow gives the relative size of one second
+        spawnedNote.GetComponent<MusicNote>().setupNote(currentNote.pitch.ToString(), currentNote.duration, maskWidth / timeWindow); //maskWidth / timeWindow gives the relative size of one second
         spawnedNote.GetComponent<MusicNote>().setDestroyTimer(timeWindow);
 
         StartCoroutine(LerpNotePosition(spawnedNote, startNotePos, endNotePos));

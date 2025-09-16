@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public float playerSpeed = 5f;
     public float gravityStrength = 9.8f;
     public float playerHealth = 10f;
+    public float attackWait = 1f;
     public Color flashColor = Color.red;
     public GameObject playerSprite;
     public GameObject fireballPrefab;
@@ -19,7 +20,7 @@ public class Player : MonoBehaviour
     private InputAction moveAction;
     private InputAction leftClickAction;
     private float vSpeed;
-
+    private bool isAttackCooldown = false;
     private Color originalColor;
     private float flashDuration = 0.2f;
 
@@ -82,25 +83,37 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void mouseLeftClick(InputAction.CallbackContext context)
+    private void mouseLeftClick(InputAction.CallbackContext context) //Projectile Attack
     {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        RaycastHit hit;
-        int groundMask = LayerMask.GetMask("Ground");
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+        if (!isAttackCooldown)
         {
-            Vector3 hitPoint = hit.point;
-            Vector3 targetVec = hitPoint - transform.position;
-            Vector3 projectileDirection = targetVec.normalized;
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            RaycastHit hit;
+            int groundMask = LayerMask.GetMask("Ground");
 
-            if (projectileDirection.y < 0f) { projectileDirection.y = 0f; } //Clamp to angles above 0 degrees horizontally
-            projectileDirection.Normalize();
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+            {
+                Vector3 hitPoint = hit.point;
+                Vector3 targetVec = hitPoint - transform.position;
+                Vector3 projectileDirection = targetVec.normalized;
 
-            Vector3 spawnPos = transform.position + projectileDirection * 0.5f;
-            GameObject fireballInstance = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
-            fireballInstance.GetComponent<ProjectileAttack>().setProjectileDirection(projectileDirection);
+                if (projectileDirection.y < 0f) { projectileDirection.y = 0f; } //Clamp to angles above 0 degrees horizontally
+                projectileDirection.Normalize();
+
+                Vector3 spawnPos = transform.position + projectileDirection * 0.5f;
+                GameObject fireballInstance = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
+                fireballInstance.GetComponent<ProjectileAttack>().setProjectileDirection(projectileDirection);
+
+                isAttackCooldown = true;
+                StartCoroutine(AttackCooldown(attackWait));
+            }
         }
+    }
+
+    IEnumerator AttackCooldown(float cooldownTime)
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        isAttackCooldown = false;
     }
 
     public void takeDamage(float damageAmount)

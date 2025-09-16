@@ -1,14 +1,18 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MusicNote : MonoBehaviour
 {
     public float accuracy = 0.8f;
+
     private float hitTime = 0f;
-    private float noteDuration;
     private float fadeDuration = 0.5f;
     private bool isFading = false;
+
+    private float noteDuration;
+    private string notePitch;
 
     void Update()
     {
@@ -57,8 +61,11 @@ public class MusicNote : MonoBehaviour
         Debug.Log(hitTime.ToString());
     }
 
-    public void setNoteSize(float duration, float baseWidth)
+    public void setupNote(string name, float duration, float baseWidth)
     {
+        notePitch = name;
+        GetComponentInChildren<TextMeshProUGUI>().text = notePitch;
+
         noteDuration = duration;
         Vector2 newSize = new Vector2(baseWidth * duration, GetComponent<RectTransform>().sizeDelta.y);
         GetComponent<RectTransform>().sizeDelta = newSize;
