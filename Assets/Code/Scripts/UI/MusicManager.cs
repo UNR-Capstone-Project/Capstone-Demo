@@ -6,10 +6,6 @@ using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-//TODO: Add collision checks for notes.
-//TODO: Get user input if note is colliding with the current time.
-//TODO: Get percentage of time that note was held, then deal accordingly.
-//TODO: Despawn notes that are no longer in range of the time frame.
 //TODO: Determine how many notes player needs to consecutively hit to perform attack.
 //TODO: Adjust engine timescale outside of the scope of this function.
 
@@ -20,13 +16,16 @@ public class MusicManager : MonoBehaviour
     private TextMeshProUGUI trackTimeComponent;
 
     public const float timeWindow = 8f; //How many seconds are centering the surrounding the current track time of the song that are previewed within the minigame. Essentially your "view" of the current song.
-    public static float reactionTime = timeWindow / 2; //Time in seconds that a note will spawn before reaching its onset time.
+    public const int MAX_HIT_TRIES = 4;
+    private static float reactionTime = timeWindow / 2; //Time in seconds that a note will spawn before reaching its onset time.
 
     private const float tempo = 85f; //Tempo is measured in beats per minute
     private static float beat = 60f / tempo;
 
     private float currentTrackTime = -reactionTime; //Start negative in case a note is played at time 0 seconds in the song!
     private int noteCount = 0;
+    private int successfulNoteHits = 0;
+    private int failedNoteHits = 0;
 
     private note[] song;
 
@@ -96,6 +95,12 @@ public class MusicManager : MonoBehaviour
 
     void Update()
     {
+        if (failedNoteHits + successfulNoteHits >= MAX_HIT_TRIES)
+        {
+            GameObject.FindWithTag("Player").GetComponent<Player>().closeMiniGame();
+            Destroy(gameObject);
+        }
+
         currentTrackTime += Time.deltaTime;
         //ISSUE: To sync with audio use audioSource.time; instead!
 
@@ -123,7 +128,7 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    void SpawnNote(note currentNote) //ISSUE: Probably better to use a coroutine to handle the animation!
+    void SpawnNote(note currentNote)
     {
         //Spawn note here!
         //Note must positionally reach the end of the visible window in "timeWindow" seconds.
@@ -158,4 +163,16 @@ public class MusicManager : MonoBehaviour
 
         noteObj.transform.localPosition = endPos;
     }
+
+    public void addSuccessfulNoteHit()
+    {
+        successfulNoteHits++;
+        Debug.Log(successfulNoteHits.ToString());
+    }
+    public void addFailedNoteHit()
+    {
+        failedNoteHits++;
+        Debug.Log(failedNoteHits.ToString());
+    }
+
 }

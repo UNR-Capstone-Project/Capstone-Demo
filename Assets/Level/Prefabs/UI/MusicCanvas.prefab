@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 1536442864311067642}
   m_Layer: 5
   m_Name: MusicCanvas
-  m_TagString: Untagged
+  m_TagString: Minigame
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

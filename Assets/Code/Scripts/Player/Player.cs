@@ -10,21 +10,29 @@ public class Player : MonoBehaviour
     public float playerHealth = 10f;
     public float attackWait = 1f;
     public Color flashColor = Color.red;
+
+    //Player Components
     public GameObject playerSprite;
     public GameObject fireballPrefab;
-
+    public GameObject musicMiniGamePrefab;
     private CharacterController characterController;
     private Animator playerAnimator;
-    public SpriteRenderer playerSpriteRenderer;
+    private SpriteRenderer playerSpriteRenderer;
 
+    //Player Control Variables
     private InputAction moveAction;
     private InputAction leftClickAction;
+    private InputAction rightClickAction;
+
     private float vSpeed;
     private bool isAttackCooldown = false;
     private Color originalColor;
     private float flashDuration = 0.2f;
 
     private Quaternion playerRotation;
+
+    //Minigame Variables
+    private bool miniGameOpened = false;
 
     void Awake()
     {
@@ -36,6 +44,10 @@ public class Player : MonoBehaviour
         leftClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/leftButton");
         leftClickAction.performed += mouseLeftClick;
         leftClickAction.Enable();
+
+        rightClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/rightButton");
+        rightClickAction.performed += mouseRightClick;
+        rightClickAction.Enable();
 
         moveAction = new InputAction(type: InputActionType.Value);
         moveAction.AddCompositeBinding("2DVector")
@@ -107,6 +119,18 @@ public class Player : MonoBehaviour
                 isAttackCooldown = true;
                 StartCoroutine(AttackCooldown(attackWait));
             }
+        }
+    }
+
+    public void closeMiniGame() { miniGameOpened = false; }
+
+    private void mouseRightClick(InputAction.CallbackContext context) //Special Attack
+    {
+        //ISSUE: Determine type of weapon being used, and open the corresponding mini-game.
+        if (!miniGameOpened)
+        {
+            GameObject musicMiniGameInstance = Instantiate(musicMiniGamePrefab);
+            miniGameOpened = true;
         }
     }
 

@@ -18,7 +18,8 @@ public class MusicNote : MonoBehaviour
     {
         if (hitTime >= noteDuration * accuracy && !isFading)
         {
-            Debug.Log("Note was successfully held for: " + hitTime.ToString() + " seconds.");
+            //Debug.Log("Note was successfully held for: " + hitTime.ToString() + " seconds.");
+            GameObject.FindWithTag("Minigame").GetComponent<MusicManager>().addSuccessfulNoteHit();
             StopAllCoroutines();
             StartCoroutine(FadeDestroy(0.1f, Color.green));
             isFading = true;
@@ -52,13 +53,18 @@ public class MusicNote : MonoBehaviour
             yield return null;
         }
 
+        if (hitTime < noteDuration * accuracy)
+        {
+            GameObject.FindWithTag("Minigame").GetComponent<MusicManager>().addFailedNoteHit();
+        }
+
         Destroy(gameObject);
     }
 
     public void addHitTime(float amount)
     {
         hitTime += amount;
-        Debug.Log(hitTime.ToString());
+        //Debug.Log(hitTime.ToString());
     }
 
     public void setupNote(string name, float duration, float baseWidth)
