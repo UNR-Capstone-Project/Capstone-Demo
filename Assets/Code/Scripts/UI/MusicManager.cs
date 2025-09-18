@@ -16,7 +16,7 @@ public class MusicManager : MonoBehaviour
     private TextMeshProUGUI trackTimeComponent;
 
     public const float timeWindow = 8f; //How many seconds are centering the surrounding the current track time of the song that are previewed within the minigame. Essentially your "view" of the current song.
-    public const int MAX_HIT_TRIES = 4;
+    public const int MAX_HIT_TRIES = 5;
     private static float reactionTime = timeWindow / 2; //Time in seconds that a note will spawn before reaching its onset time.
 
     private const float tempo = 85f; //Tempo is measured in beats per minute
@@ -26,6 +26,7 @@ public class MusicManager : MonoBehaviour
     private int noteCount = 0;
     private int successfulNoteHits = 0;
     private int failedNoteHits = 0;
+    private bool isDestroyed = false;
 
     private note[] song;
 
@@ -90,15 +91,22 @@ public class MusicManager : MonoBehaviour
         song[1] = new note(NOTE_NAME.WholeNote, NOTE_PITCH.G, 2f);
         song[2] = new note(NOTE_NAME.EighthNote, NOTE_PITCH.AFlat, 8f);
         song[3] = new note(NOTE_NAME.HalfNote, NOTE_PITCH.BFlat, 9f);
-        song[4] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.D, 10f);
+        song[4] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.D, 12f);
+    }
+
+    IEnumerator TimedDestroy()
+    {
+        yield return new WaitForSeconds(1);
+        GameObject.FindWithTag("Player").GetComponent<Player>().closeMiniGame();
+        Destroy(gameObject);
     }
 
     void Update()
     {
-        if (failedNoteHits + successfulNoteHits >= MAX_HIT_TRIES)
+        if (failedNoteHits + successfulNoteHits >= MAX_HIT_TRIES && !isDestroyed)
         {
-            GameObject.FindWithTag("Player").GetComponent<Player>().closeMiniGame();
-            Destroy(gameObject);
+            StartCoroutine(TimedDestroy());
+            isDestroyed = true;
         }
 
         currentTrackTime += Time.deltaTime;
@@ -138,7 +146,7 @@ public class MusicManager : MonoBehaviour
 
         GameObject spawnedNote = Instantiate(notePrefab, parentMask.transform);
 
-        float maskWidth = parentMask.GetComponent<RectTransform>().rect.width;
+        float maskWidth = parentMask.GetComponent<RectTransform>().rect.width * 2;
         Vector3 startNotePos = new Vector3(-maskWidth / 2, 0f, 0f);
         Vector3 endNotePos = new Vector3(maskWidth / 2, 0f, 0f);
 

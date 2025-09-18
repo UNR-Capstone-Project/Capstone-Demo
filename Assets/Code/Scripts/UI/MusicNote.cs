@@ -8,11 +8,20 @@ public class MusicNote : MonoBehaviour
     public float accuracy = 0.8f;
 
     private float hitTime = 0f;
+    private float prevHitTime = 0f;
     private float fadeDuration = 0.5f;
     private bool isFading = false;
 
     private float noteDuration;
     private string notePitch;
+    private Image UIImage;
+    private Color originalColor;
+
+    void Start()
+    {
+        UIImage = GetComponent<Image>();
+        originalColor = UIImage.color;
+    }
 
     void Update()
     {
@@ -24,6 +33,16 @@ public class MusicNote : MonoBehaviour
             StartCoroutine(FadeDestroy(0.1f, Color.green));
             isFading = true;
         }
+
+        if (hitTime > prevHitTime)
+        {
+            prevHitTime = hitTime;
+            UIImage.color = Color.orange;
+        }
+        else
+        {
+            UIImage.color = originalColor;
+        }
     }
 
     public void setDestroyTimer(float destroyTime)
@@ -34,9 +53,6 @@ public class MusicNote : MonoBehaviour
     private IEnumerator FadeDestroy(float destroyTime, Color newColor)
     {
         yield return new WaitForSeconds(destroyTime);
-
-        Image UIImage = GetComponent<Image>();
-        Color originalColor = UIImage.color;
 
         float time = 0f;
 

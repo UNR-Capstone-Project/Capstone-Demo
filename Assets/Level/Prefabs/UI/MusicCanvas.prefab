@@ -350,7 +350,7 @@ MonoBehaviour:
   points:
   - {x: -480, y: -270}
   - {x: 480, y: -270}
-  thickness: 5
+  thickness: 10
 --- !u!222 &23599346478096842
 CanvasRenderer:
   m_ObjectHideFlags: 0
