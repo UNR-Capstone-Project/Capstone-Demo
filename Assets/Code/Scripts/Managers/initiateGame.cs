@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-
+using SoundSystem;
 public class initiateGame : MonoBehaviour
 {
     [SerializeField] private GameObject Ground;
@@ -11,7 +11,6 @@ public class initiateGame : MonoBehaviour
     [SerializeField] private GameObject mainPlayer;
     [SerializeField] private GameObject simpleRock;
 
-    [SerializeField] private GameObject musicManagerPrefab;
     [SerializeField] private GameObject musicPlayerPrefab;
     [SerializeField] private musicEvent testSong;
 
@@ -33,11 +32,7 @@ public class initiateGame : MonoBehaviour
         Instantiate(mainDirectionalLight);
         Instantiate(simpleRock);
 
-        Instantiate(musicManagerPrefab);
-        musicManagerPrefab.GetComponent<musicManager>();
-
         Instantiate(musicPlayerPrefab);
-        musicPlayerPrefab.GetComponent<musicPlayer>();
     }
 
     private void createObjects()

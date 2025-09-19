@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4484027efbf291349b949625f2fc8a34, type: 3}
+  m_Name: testTownMusicEvent
+  m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.musicEvent
+  musicVolume: 1
+  musicLayers:
+  - {fileID: 8300000, guid: f456dd25e3c67e448b085655527436c6, type: 3}
+  musicMixerGroup: {fileID: 0}

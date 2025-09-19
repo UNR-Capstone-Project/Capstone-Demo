@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-[CreateAssetMenu(fileName = "musicEvent", menuName = "Scriptable Objects/musicEvent")]
-public class musicEvent : ScriptableObject
+namespace SoundSystem
 {
-    [SerializeField] private float musicVolume = 1.0f;
-    [SerializeField] private AudioSource[] musicLayers;
-    [SerializeField] private AudioMixerGroup musicMixerGroup;
+    [CreateAssetMenu(fileName = "musicEvent", menuName = "Scriptable Objects/musicEvent")]
+    public class musicEvent : ScriptableObject
+    {
+    [SerializeField] float musicVolume = 1.0f;
+    [SerializeField] AudioClip[] musicLayers;
+    [SerializeField] AudioMixerGroup musicMixerGroup;
 
     public float publicMusicVolume => musicVolume;
-    public AudioSource[] publicMusicLayers => musicLayers;
+    public AudioClip[] publicMusicLayers => musicLayers;
     public AudioMixerGroup publicMusicMixerGroup => musicMixerGroup;
+    }
 }
+
+
