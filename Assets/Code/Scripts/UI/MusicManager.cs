@@ -84,6 +84,10 @@ public class MusicManager : MonoBehaviour
 
     void Start()
     {
+        Canvas mCanvas = GetComponent<Canvas>();
+        mCanvas.worldCamera = Camera.main;
+        mCanvas.planeDistance = 0;
+
         trackTimeComponent = GetComponentInChildren<TextMeshProUGUI>();
 
         song = new note[5]; //A song with 3 total notes.
