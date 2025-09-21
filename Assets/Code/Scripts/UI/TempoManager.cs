@@ -1,27 +1,82 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
+/*
 
 public class TempoManager : MonoBehaviour
 {
-    public const float TEMPO = 85.0f; //Beats per second.
-    public const float REACTION_INTERVAL = 0.25f; //How many seconds around the rythm the player gets to react
-    private const float RYTHM = TEMPO / 60; //How many beats in one second.
-     
+    public const float TEMPO = 85.0f; //Beats per minute.
+    public const float REACTION_INTERVAL = 0.25f; //How many seconds around the rhythm the player gets to react
+
+    private const float RHYTHM = 60 / TEMPO;
+    private bool onBeat = false;
+    private double nextBeatTime;
+    private InputAction noteHitAction;
+    private MusicManager mMusicManager;
+
     void Start()
     {
-        GameObject.Find("ManagerObject").GetCompoenent<MusicManager>().playMusicEvent += songHasStarted //Subscribing to an event
+        mMusicManager = GameObject.Find("ManagerObject").GetComponent<MusicManager>();
+        mMusicManager.PlayMusicEvent += MusicStarted; //Subscribes to the event
     }
 
-    void Update()
+    void Awake()
     {
-        
+        noteHitAction = new InputAction(type: InputActionType.Button, binding: "<Keyboard>/space");
+        noteHitAction.started += CheckNoteHit;
+        noteHitAction.Enable();
     }
 
-    void songHasStarted()
+    private void CheckNoteHit(InputAction.CallbackContext context)
     {
-        StartCorutine()
+        if (onBeat)
+        {
+            Debug.Log("Key press was hit on beat!");
+        }
+    }
+
+    void MusicStarted()
+    {
+        StopAllCoroutines();
+        StartCoroutine(RhythmTimer());
+    }
+
+    IEnumerator RhythmTimer()
+    {
+        nextBeatTime = mMusicManager.getDspTime();
+
+        while (true)
+        {
+            nextBeatTime += RHYTHM;
+            double currentTime = mMusicManager.getDspTime();
+            double waitTime = nextBeatTime - currentTime;
+
+            if (waitTime > 0)
+            {
+                yield return new WaitForSeconds((float)waitTime);
+            }
+            else
+            {
+                yield return null;
+            }
+
+            onBeat = true;
+            StartCoroutine(RhythmTimer());
+            StartCoroutine(ReactionTimer());
+        }
+    }
+
+    IEnumerator ReactionTimer()
+    {
+        yield return new WaitForSeconds(REACTION_INTERVAL);
+        onBeat = false;
     }
 
     void OnDestroy()
     {
-        GameObject.Find("ManagerObject").GetCompoenent<MusicManager>().playMusicEvent -= songHasStarted //Avoid memoryleaks.
+        mMusicManager.PlayMusicEvent -= MusicStarted; //Avoid memory leaks.
+    }
 }
+*/

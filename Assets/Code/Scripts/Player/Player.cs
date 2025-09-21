@@ -130,6 +130,7 @@ public class Player : MonoBehaviour
         if (!miniGameOpened)
         {
             GameObject musicMiniGameInstance = Instantiate(musicMiniGamePrefab);
+            musicMiniGameInstance.name = musicMiniGamePrefab.name;
             miniGameOpened = true;
         }
     }

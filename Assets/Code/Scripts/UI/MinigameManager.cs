@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 //TODO: Determine how many notes player needs to consecutively hit to perform attack.
 //TODO: Adjust engine timescale outside of the scope of this function.
 
-public class MusicManager : MonoBehaviour
+public class MinigameManager : MonoBehaviour
 {
     public GameObject notePrefab;
     public GameObject parentMask;
