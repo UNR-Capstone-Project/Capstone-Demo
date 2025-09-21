@@ -92,10 +92,10 @@ public class MusicManager : MonoBehaviour
 
         song = new note[5]; //A song with 3 total notes.
         song[0] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.A, 0f);
-        song[1] = new note(NOTE_NAME.WholeNote, NOTE_PITCH.G, 2f);
-        song[2] = new note(NOTE_NAME.EighthNote, NOTE_PITCH.AFlat, 8f);
-        song[3] = new note(NOTE_NAME.HalfNote, NOTE_PITCH.BFlat, 9f);
-        song[4] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.D, 12f);
+        song[1] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.G, 1f);
+        song[2] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.AFlat, 2f);
+        song[3] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.BFlat, 3f);
+        song[4] = new note(NOTE_NAME.QuarterNote, NOTE_PITCH.D, 4f);
     }
 
     IEnumerator TimedDestroy()
@@ -138,7 +138,9 @@ public class MusicManager : MonoBehaviour
                 noteCount++;
             }
         }
-    }
+    } 
+    //(measure # - 1 * how many beats per measure) + what beat your in) * (tempo/60) = onset
+    //tempo / 60 seconds -> gives rythm
 
     void SpawnNote(note currentNote)
     {
