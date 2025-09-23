@@ -75,6 +75,7 @@ public class TempoManager : MonoBehaviour
 
     //    Start                     End
     //      |------------------------|
+    //   BEAT 1                    BEAT 2
     //These HitTime measurements are used to compare the _currentBeatTime with whether it lands within the thresholds of Excellent, Good, Bad or Miss
     private float _excellentHitTimeStart = 0;
     private float _goodHitTimeStart = 0;
