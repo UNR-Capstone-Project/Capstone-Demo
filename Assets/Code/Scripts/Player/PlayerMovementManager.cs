@@ -28,6 +28,16 @@ public class PlayerMovementManager : MonoBehaviour
     {
         return Physics.BoxCast(transform.position, _groundCheckBoxDimensions, Vector3.down, transform.rotation, _groundCheckBoxHeight);
     }
+    private void MovePlayer()
+    {
+        Vector3 forwardVector = _cameraTransform.forward.normalized;
+        Vector3 rightVector = _cameraTransform.right.normalized;
+        Vector3 targetVel = (_playerLocomotion.y * _forwardSpeedMultiplier * _playerSpeed * forwardVector)
+                              + (_playerLocomotion.x * _strafeSpeedMultiplier * _playerSpeed * rightVector)
+                              + (Vector3.up * _playerRigidbody.linearVelocity.y);
+        _playerRigidbody.AddForce(targetVel - _playerRigidbody.linearVelocity, ForceMode.VelocityChange);
+    }
+
     public void HandleMovement(Vector2 locomotion)
     {
         _playerLocomotion = locomotion;
@@ -40,16 +50,6 @@ public class PlayerMovementManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position + (Vector3.down * _groundCheckBoxHeight), _groundCheckBoxDimensions);
-    }
-
-    private void MovePlayer()
-    {
-        Vector3 forwardVector = _cameraTransform.forward.normalized;
-        Vector3 rightVector = _cameraTransform.right.normalized;
-        Vector3 targetVel = (_playerLocomotion.y * _forwardSpeedMultiplier * _playerSpeed * forwardVector)
-                              + (_playerLocomotion.x * _strafeSpeedMultiplier * _playerSpeed * rightVector)
-                              + (Vector3.up * _playerRigidbody.linearVelocity.y);
-        _playerRigidbody.AddForce(targetVel - _playerRigidbody.linearVelocity, ForceMode.VelocityChange);
     }
 
     private Vector2 _playerLocomotion = Vector2.zero;

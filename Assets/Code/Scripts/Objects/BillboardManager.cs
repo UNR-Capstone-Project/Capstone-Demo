@@ -6,13 +6,9 @@ public class BillboardManager : MonoBehaviour
     private GameObject[] _billboardTransforms;
     [SerializeField] private Transform cameraPos;
 
-    private void Awake()
-    {
-        _billboardTransforms = GameObject.FindGameObjectsWithTag("Billboard");
-    }
-
     void Start()
     {
+        _billboardTransforms = GameObject.FindGameObjectsWithTag("Billboard");
         float cameraXRotation = cameraPos.rotation.eulerAngles.x;
         float cameraYRotation = cameraPos.rotation.eulerAngles.y;
         foreach (GameObject gameObjects in _billboardTransforms)
