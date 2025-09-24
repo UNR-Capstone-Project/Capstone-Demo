@@ -13,6 +13,11 @@ public class musicManager : ScriptableObject
             if (_instance == null)
             {
                 _instance = Resources.Load<musicManager>("MusicManager");
+
+                if (_instance == null)
+                {
+                    _instance = CreateInstance<musicManager>();
+                }
             }
 
             return _instance;
@@ -21,24 +26,28 @@ public class musicManager : ScriptableObject
 
     [SerializeField] private float globalMusicVolume;
     [SerializeField] private List<musicPlayer> activePlayers;
-    [SerializeField] private musicPlayer currPlayer;
+    [SerializeField] private List<musicPlayer> inactivePlayers; 
+    [SerializeField] private musicPlayer currentPlayer;
     [SerializeField] private float crossfadeTime = 0.5f;
-
-
-    public void debugMessage()
-    {
-        Debug.Log("Hello, this manager exists in the scene!");
-    }
 
     public void playSong(musicEvent s)
     {
+        //how should it interact with active and inactive player list
+
         foreach (musicPlayer Player in activePlayers)
         {
-            if (Player.publicSong == s)
-            {
-                Player.play();
-            }
+
         }
+    }
+
+    public void playSong(GameObject prefab)
+    {
+        var player = Instantiate(prefab);
+        currentPlayer = player.GetComponent<musicPlayer>();
+
+        if (currentPlayer == null) return;
+
+        currentPlayer.play();
     }
 
     public void playSong(musicPlayer p)
@@ -48,12 +57,11 @@ public class musicManager : ScriptableObject
 
     public void stopSong(musicEvent s)
     {
+        //how should it interact with active and inactive player list
+
         foreach (musicPlayer Player in activePlayers)
         {
-            if (Player.publicSong == s)
-            {
-                Player.stop();
-            }
+
         }
     }
 

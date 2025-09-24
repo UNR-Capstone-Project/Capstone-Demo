@@ -21,7 +21,11 @@ public class musicPlayer : MonoBehaviour
     public void Awake()
     {
         if (song == null) return;
+        setupLayers();
+    }
 
+    public void setupLayers()
+    {
         for (int i = 0; i < song.publicMusicLayers.Length; i++)
         {
             songLayers.Add(gameObject.AddComponent<AudioSource>());
@@ -67,6 +71,7 @@ public class musicPlayer : MonoBehaviour
         {
             if (layer == null) continue;
 
+            
             layer.outputAudioMixerGroup = song.publicMusicMixerGroup;
             layer.volume = song.publicMusicVolume;
             layer.loop = false;

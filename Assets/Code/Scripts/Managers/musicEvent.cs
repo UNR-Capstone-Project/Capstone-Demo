@@ -9,6 +9,7 @@ namespace SoundSystem
     [SerializeField] float musicVolume = 1.0f;
     [SerializeField] AudioClip[] musicLayers;
     [SerializeField] AudioMixerGroup musicMixerGroup;
+    [SerializeField] int musicTempo;
 
     public float publicMusicVolume => musicVolume;
     public AudioClip[] publicMusicLayers => musicLayers;

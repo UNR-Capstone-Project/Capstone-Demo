@@ -45,8 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::musicPlayer
   startTime: 67.11466666666666
-  playerVolume: 0
-  song: {fileID: 0}
-  prioritySongLayer: 0
+  playerVolume: 1
+  song: {fileID: 11400000, guid: bcaa9d5a773ddd543957aa2a54b83067, type: 2}
   songLayers: []
   startingSongLayerVolumes: []

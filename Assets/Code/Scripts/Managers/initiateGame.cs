@@ -9,17 +9,16 @@ public class initiateGame : MonoBehaviour
     [SerializeField] private Volume main3DVolume;
     [SerializeField] private Light mainDirectionalLight;
     [SerializeField] private GameObject mainPlayer;
-    [SerializeField] private GameObject simpleRock;
-
-    [SerializeField] private GameObject musicPlayerPrefab;
+    
     [SerializeField] private musicEvent testSong;
+    [SerializeField] private GameObject musicPlayerPrefab;
 
     //load all relevant data at start of game
     public void Start()
     {
         bindObjects();
-        //show a loading screen
 
+        //show a loading screen
     }
 
     private void bindObjects()
@@ -30,9 +29,10 @@ public class initiateGame : MonoBehaviour
         Instantiate(mainCamera);
         Instantiate(main3DVolume);
         Instantiate(mainDirectionalLight);
-        Instantiate(simpleRock);
 
-        Instantiate(musicPlayerPrefab);
+        //Instantiate(musicPlayerPrefab);
+        musicManager.Instance.playSong(musicPlayerPrefab);
+        
     }
 
     private void createObjects()
