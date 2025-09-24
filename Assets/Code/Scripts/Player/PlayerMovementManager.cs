@@ -1,11 +1,13 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using static TempoManager;
 
 public class PlayerMovementManager : MonoBehaviour
 {
     private void Awake()
     {
         _playerRigidbody = GetComponent<Rigidbody>();
+        _tempoManager = GameObject.Find("TempoManager").GetComponent<TempoManager>();
     }
     private void Start()
     {
@@ -44,7 +46,22 @@ public class PlayerMovementManager : MonoBehaviour
     }
     public void HandleMousePrimaryInteraction()
     {
-        
+        switch (_tempoManager.CheckHitQuality())
+        {
+            case HIT_QUALITY.EXCELLENT:
+                Debug.Log("EXCELLENT");
+                break;
+            case HIT_QUALITY.GOOD:
+                Debug.Log("GOOD");
+                break;
+            case HIT_QUALITY.BAD:
+                Debug.Log("BAD");
+                break;
+            default:
+                Debug.Log("MISS");
+                break;
+        }
+        ;
     }
 
     private void OnDrawGizmos()
@@ -55,6 +72,7 @@ public class PlayerMovementManager : MonoBehaviour
     private Vector2 _playerLocomotion = Vector2.zero;
     [SerializeField] private InputTranslator _inputTranslator;
     [SerializeField] private Transform _cameraTransform;
+    private TempoManager _tempoManager;
     private Rigidbody _playerRigidbody;
     private float _strafeSpeedMultiplier = 1;
     private float _forwardSpeedMultiplier = 1;

@@ -15,6 +15,7 @@ public class TempoManager : MonoBehaviour
     {
         _tempo = new_tempo;
 
+        //The time between each beat(60 seconds / BPM)
         _timeBetweenBeats = 60 / _tempo;
 
         _excellentHitTimeStart = _timeBetweenBeats * _excellentPercent;
@@ -28,15 +29,14 @@ public class TempoManager : MonoBehaviour
     }
     private void BeatTick()
     {
-        
         _currentBeatTime = 0;
-        Debug.Log("Tick");
     }
-    private IEnumerator UpdateBeatTickTimer()
+    public HIT_QUALITY CheckHitQuality()
     {
-        yield return new WaitForSeconds(_timeBetweenBeats);
-        BeatTick();
-        StartUpdateBeatTick();
+        if (_currentBeatTime < _excellentHitTimeStart || _currentBeatTime > _excellentHitTimeEnd) return HIT_QUALITY.EXCELLENT;
+        else if (_currentBeatTime < _goodHitTimeStart || _currentBeatTime > _goodHitTimeEnd)      return HIT_QUALITY.GOOD;
+        else if (_currentBeatTime < _badHitTimeStart || _currentBeatTime > _badHitTimeEnd)        return HIT_QUALITY.BAD;
+        return HIT_QUALITY.MISS;
     }
     public void StartUpdateBeatTick()
     {
@@ -46,32 +46,43 @@ public class TempoManager : MonoBehaviour
     {
         StopCoroutine(UpdateBeatTickTimer());
     }
-    public HIT_QUALITY CheckHitQuality()
+    private IEnumerator UpdateBeatTickTimer()
     {
-        if (_currentBeatTime < _excellentHitTimeStart || _currentBeatTime > _excellentHitTimeEnd) return HIT_QUALITY.EXCELLENT;
-        else if (_currentBeatTime < _goodHitTimeStart || _currentBeatTime > _goodHitTimeEnd)      return HIT_QUALITY.GOOD;
-        else if (_currentBeatTime < _badHitTimeStart || _currentBeatTime > _badHitTimeEnd)        return HIT_QUALITY.BAD;
-        return HIT_QUALITY.MISS;
-    }
-
-    void Start()
-    {
-        SetTempo(_tempo);
-
+        yield return new WaitForSeconds(_timeBetweenBeats);
+        BeatTick();
         StartUpdateBeatTick();
+        StartCoroutine(UpdateBeatTickSound());
     }
+    private IEnumerator UpdateBeatTickSound()
+    {
+        yield return new WaitForSeconds(_timeToPlayTick);
+        _tickSound.Play();
+    }
+
     void Update()
     {
         _currentBeatTime += Time.deltaTime;
     }
+    private void Awake()
+    {
+        _tickSound = GetComponent<AudioSource>();
+    }
+    void Start()
+    {
+        SetTempo(_tempo);
+        _timeToPlayTick = _timeBetweenBeats - (_tickSound.clip.length/2);
+        StartUpdateBeatTick();
+    }
 
+    //Tempo/Beat Values
     private float _tempo = 85f;
     [SerializeField] private float _timeBetweenBeats = 0;
     private float _currentBeatTime = 0;
 
-    private float _excellentPercent = 0.05f;
-    private float _goodPercent = 0.1f;
-    private float _badPercent = 0.25f;
+    //Hit Times
+    private float _excellentPercent = 0.07f;
+    private float _goodPercent = 0.15f;
+    private float _badPercent = 0.30f;
 
     //    Start                     End
     //      |------------------------|
@@ -83,4 +94,8 @@ public class TempoManager : MonoBehaviour
     private float _excellentHitTimeEnd = 0;
     private float _goodHitTimeEnd = 0;
     private float _badHitTimeEnd = 0;
+    
+    //Audio
+    private AudioSource _tickSound;
+    private float _timeToPlayTick = 0;
 }
