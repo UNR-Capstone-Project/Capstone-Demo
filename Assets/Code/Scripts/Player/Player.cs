@@ -8,22 +8,31 @@ public class Player : MonoBehaviour
     public float playerSpeed = 5f;
     public float gravityStrength = 9.8f;
     public float playerHealth = 10f;
+    public float attackWait = 1f;
     public Color flashColor = Color.red;
+
+    //Player Components
     public GameObject playerSprite;
     public GameObject fireballPrefab;
-
+    public GameObject musicMiniGamePrefab;
     private CharacterController characterController;
     private Animator playerAnimator;
-    public SpriteRenderer playerSpriteRenderer;
+    private SpriteRenderer playerSpriteRenderer;
 
+    //Player Control Variables
     private InputAction moveAction;
     private InputAction leftClickAction;
-    private float vSpeed;
+    private InputAction rightClickAction;
 
+    private float vSpeed;
+    private bool isAttackCooldown = false;
     private Color originalColor;
     private float flashDuration = 0.2f;
 
     private Quaternion playerRotation;
+
+    //Minigame Variables
+    private bool miniGameOpened = false;
 
     void Awake()
     {
@@ -35,6 +44,10 @@ public class Player : MonoBehaviour
         leftClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/leftButton");
         leftClickAction.performed += mouseLeftClick;
         leftClickAction.Enable();
+
+        rightClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/rightButton");
+        rightClickAction.performed += mouseRightClick;
+        rightClickAction.Enable();
 
         moveAction = new InputAction(type: InputActionType.Value);
         moveAction.AddCompositeBinding("2DVector")
@@ -82,25 +95,50 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void mouseLeftClick(InputAction.CallbackContext context)
+    private void mouseLeftClick(InputAction.CallbackContext context) //Projectile Attack
     {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        RaycastHit hit;
-        int groundMask = LayerMask.GetMask("Ground");
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+        if (!isAttackCooldown)
         {
-            Vector3 hitPoint = hit.point;
-            Vector3 targetVec = hitPoint - transform.position;
-            Vector3 projectileDirection = targetVec.normalized;
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            RaycastHit hit;
+            int groundMask = LayerMask.GetMask("Ground");
 
-            if (projectileDirection.y < 0f) { projectileDirection.y = 0f; } //Clamp to angles above 0 degrees horizontally
-            projectileDirection.Normalize();
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+            {
+                Vector3 hitPoint = hit.point;
+                Vector3 targetVec = hitPoint - transform.position;
+                Vector3 projectileDirection = targetVec.normalized;
 
-            Vector3 spawnPos = transform.position + projectileDirection * 0.5f;
-            GameObject fireballInstance = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
-            fireballInstance.GetComponent<ProjectileAttack>().setProjectileDirection(projectileDirection);
+                if (projectileDirection.y < 0f) { projectileDirection.y = 0f; } //Clamp to angles above 0 degrees horizontally
+                projectileDirection.Normalize();
+
+                Vector3 spawnPos = transform.position + projectileDirection * 0.5f;
+                GameObject fireballInstance = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
+                fireballInstance.GetComponent<ProjectileAttack>().setProjectileDirection(projectileDirection);
+
+                isAttackCooldown = true;
+                StartCoroutine(AttackCooldown(attackWait));
+            }
         }
+    }
+
+    public void closeMiniGame() { miniGameOpened = false; }
+
+    private void mouseRightClick(InputAction.CallbackContext context) //Special Attack
+    {
+        //ISSUE: Determine type of weapon being used, and open the corresponding mini-game.
+        if (!miniGameOpened)
+        {
+            GameObject musicMiniGameInstance = Instantiate(musicMiniGamePrefab);
+            musicMiniGameInstance.name = musicMiniGamePrefab.name;
+            miniGameOpened = true;
+        }
+    }
+
+    IEnumerator AttackCooldown(float cooldownTime)
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        isAttackCooldown = false;
     }
 
     public void takeDamage(float damageAmount)
