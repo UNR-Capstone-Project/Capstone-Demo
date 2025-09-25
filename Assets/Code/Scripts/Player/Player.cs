@@ -10,7 +10,9 @@ public class Player : MonoBehaviour
     //Player Movement
     private Vector2 _playerLocomotion = Vector2.zero;
     [SerializeField] private InputTranslator _inputTranslator;
+    
     [SerializeField] private Transform _cameraTransform;
+    private Transform _mainCameraRef;
     private TempoManagerV2 _tempoManager;
     private Rigidbody _playerRigidbody;
     private float _strafeSpeedMultiplier = 1;
@@ -57,14 +59,19 @@ public class Player : MonoBehaviour
         rightClickAction.Enable();
         */
 
-        playerRotation = Quaternion.Euler(0f, 45f, 0f);
+        //playerRotation = Quaternion.Euler(0f, 45f, 0f);
         _playerRigidbody = GetComponent<Rigidbody>();
-        _tempoManager = GameObject.Find("TempoManagerV2").GetComponent<TempoManagerV2>();
+        _tempoManager = GameObject.Find("TempoManager").GetComponent<TempoManagerV2>();
+        _mainCameraRef = GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
     private void Start()
     {
         _inputTranslator.OnMovementEvent += HandleMovement;
         _inputTranslator.OnMousePrimaryInteractionEvent += HandleMousePrimaryInteraction;
+
+        //Setting the y-axis rotation of PlayerCamera so it is aligned with the MainCamera orientation on the y-axis
+        _cameraTransform.SetLocalPositionAndRotation(_cameraTransform.localPosition, 
+                                                     Quaternion.Euler(0 ,_mainCameraRef.localRotation.eulerAngles.y, 0));
     }
     private void OnDestroy()
     {
