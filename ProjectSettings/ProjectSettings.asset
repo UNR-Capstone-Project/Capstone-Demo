@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 4e60dcd8743a5f3408f6b339e5d04ae9
+  productGUID: 3f656d092e81b764491965faad4c5a17
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: SeniorProjects - Player&Camera Movement
+  productName: Capstone Demo Project
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -842,14 +842,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: SeniorProjects - Player&Camera Movement
+  metroPackageName: Capstone Demo Project
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: SeniorProjects - Player&Camera Movement
+  metroApplicationDescription: Capstone Demo Project
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -920,11 +920,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: 04e46648-9120-49fc-9e15-a16affbf841f
+  cloudProjectId: 77f7f4b2-3938-49f2-8587-0d457d74a611
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: SeniorProjects - Player&Camera Movement
-  organizationId: satireiguess
+  projectName: Capstone Demo Project
+  organizationId: andy_wittig
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

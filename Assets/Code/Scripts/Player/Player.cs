@@ -1,0 +1,157 @@
+using Unity.VisualScripting;
+using UnityEngine;
+using System.Collections;
+using UnityEngine.InputSystem;
+
+public class Player : MonoBehaviour
+{
+    public float playerSpeed = 5f;
+    public float gravityStrength = 9.8f;
+    public float playerHealth = 10f;
+    public float attackWait = 1f;
+    public Color flashColor = Color.red;
+
+    //Player Components
+    public GameObject playerSprite;
+    public GameObject fireballPrefab;
+    public GameObject musicMiniGamePrefab;
+    private CharacterController characterController;
+    private Animator playerAnimator;
+    private SpriteRenderer playerSpriteRenderer;
+
+    //Player Control Variables
+    private InputAction moveAction;
+    private InputAction leftClickAction;
+    private InputAction rightClickAction;
+
+    private float vSpeed;
+    private bool isAttackCooldown = false;
+    private Color originalColor;
+    private float flashDuration = 0.2f;
+
+    private Quaternion playerRotation;
+
+    //Minigame Variables
+    private bool miniGameOpened = false;
+
+    void Awake()
+    {
+        characterController = GetComponent<CharacterController>();
+        playerAnimator = playerSprite.GetComponent<Animator>();
+        playerSpriteRenderer = playerSprite.GetComponent<SpriteRenderer>();
+        originalColor = playerSpriteRenderer.material.GetColor("_TintColor");
+
+        leftClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/leftButton");
+        leftClickAction.performed += mouseLeftClick;
+        leftClickAction.Enable();
+
+        rightClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/rightButton");
+        rightClickAction.performed += mouseRightClick;
+        rightClickAction.Enable();
+
+        moveAction = new InputAction(type: InputActionType.Value);
+        moveAction.AddCompositeBinding("2DVector")
+            .With("Up", "<Keyboard>/w")
+            .With("Left", "<Keyboard>/a")
+            .With("Down", "<Keyboard>/s")
+            .With("Right", "<Keyboard>/d");
+
+        moveAction.Enable();
+
+        playerRotation = Quaternion.Euler(0f, 45f, 0f);
+    }
+
+    void Update()
+    {
+        if (!characterController.isGrounded)
+        {
+            vSpeed -= gravityStrength * Time.deltaTime;
+        }
+        else if (vSpeed < 0) { vSpeed = 0f; } //Clamp
+
+        Vector2 input = moveAction.ReadValue<Vector2>();
+        Vector3 horizontal = new Vector3(input.x, 0, input.y);
+        Vector3 vertical = new Vector3(0f, vSpeed, 0f);
+
+        Vector3 rotatedHorizontal = playerRotation * horizontal;
+        Vector3 moveDir = rotatedHorizontal + vertical;
+
+        characterController.Move(moveDir * playerSpeed * Time.deltaTime);
+
+        if (Mathf.Abs(input.x) > 0)
+        {
+            Vector3 currentScale = playerSprite.transform.localScale;
+            currentScale.x = Mathf.Sign(input.x) * Mathf.Abs(currentScale.x);
+            playerSprite.transform.localScale = currentScale;
+        }
+
+        if (input.x != 0 || input.y != 0) //Player is running
+        {
+            playerAnimator.SetBool("isRunning", true);
+        }
+        else
+        {
+            playerAnimator.SetBool("isRunning", false);
+        }
+    }
+
+    private void mouseLeftClick(InputAction.CallbackContext context) //Projectile Attack
+    {
+        if (!isAttackCooldown)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            RaycastHit hit;
+            int groundMask = LayerMask.GetMask("Ground");
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+            {
+                Vector3 hitPoint = hit.point;
+                Vector3 targetVec = hitPoint - transform.position;
+                Vector3 projectileDirection = targetVec.normalized;
+
+                if (projectileDirection.y < 0f) { projectileDirection.y = 0f; } //Clamp to angles above 0 degrees horizontally
+                projectileDirection.Normalize();
+
+                Vector3 spawnPos = transform.position + projectileDirection * 0.5f;
+                GameObject fireballInstance = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
+                fireballInstance.GetComponent<ProjectileAttack>().setProjectileDirection(projectileDirection);
+
+                isAttackCooldown = true;
+                StartCoroutine(AttackCooldown(attackWait));
+            }
+        }
+    }
+
+    public void closeMiniGame() { miniGameOpened = false; }
+
+    private void mouseRightClick(InputAction.CallbackContext context) //Special Attack
+    {
+        //ISSUE: Determine type of weapon being used, and open the corresponding mini-game.
+        if (!miniGameOpened)
+        {
+            GameObject musicMiniGameInstance = Instantiate(musicMiniGamePrefab);
+            musicMiniGameInstance.name = musicMiniGamePrefab.name;
+            miniGameOpened = true;
+        }
+    }
+
+    IEnumerator AttackCooldown(float cooldownTime)
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        isAttackCooldown = false;
+    }
+
+    public void takeDamage(float damageAmount)
+    {
+        playerHealth -= damageAmount;
+        StopCoroutine(flashPlayer());
+        StartCoroutine(flashPlayer());
+    }
+
+    IEnumerator flashPlayer()
+    {
+        playerSpriteRenderer.material.SetColor("_TintColor", flashColor);
+        yield return new WaitForSeconds(flashDuration);
+        playerSpriteRenderer.material.SetColor("_TintColor", originalColor);
+    }
+}
