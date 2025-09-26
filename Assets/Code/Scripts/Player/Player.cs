@@ -8,18 +8,17 @@ using UnityEngine.Windows;
 public class Player : MonoBehaviour
 {
     //Player Movement
-    private Vector2 _playerLocomotion = Vector2.zero;
-    [SerializeField] private InputTranslator _inputTranslator;
+    private Vector2 playerLocomotion = Vector2.zero;
+    [SerializeField] private InputTranslator inputTranslator;
     
-    [SerializeField] private Transform _cameraTransform;
-    private Transform _mainCameraRef;
-    private TempoManagerV2 _tempoManager;
-    private Rigidbody _playerRigidbody;
-    private float _strafeSpeedMultiplier = 1;
-    private float _forwardSpeedMultiplier = 1;
-    [SerializeField] float _playerSpeed = 100;
-    [SerializeField] private Vector3 _groundCheckBoxDimensions;
-    [SerializeField] private float _groundCheckBoxHeight;
+    private Transform mainCameraRef;
+    private TempoManagerV2 tempoManager;
+    private Rigidbody playerRigidbody;
+    private float strafeSpeedMultiplier = 1;
+    private float forwardSpeedMultiplier = 1;
+    [SerializeField] float playerSpeed = 100;
+    [SerializeField] private Vector3 groundCheckBoxDimensions;
+    [SerializeField] private float groundCheckBoxHeight;
 
     //Player Stats
     public float playerHealth = 10f;
@@ -60,48 +59,55 @@ public class Player : MonoBehaviour
         */
 
         //playerRotation = Quaternion.Euler(0f, 45f, 0f);
-        _playerRigidbody = GetComponent<Rigidbody>();
-        _tempoManager = GameObject.Find("TempoManager").GetComponent<TempoManagerV2>();
-        _mainCameraRef = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        playerRigidbody = GetComponent<Rigidbody>();
+        tempoManager = GameObject.Find("TempoManager").GetComponent<TempoManagerV2>();
+        mainCameraRef = Camera.main.transform;
     }
     private void Start()
     {
-        _inputTranslator.OnMovementEvent += HandleMovement;
-        _inputTranslator.OnMousePrimaryInteractionEvent += HandleMousePrimaryInteraction;
-
-        //Setting the y-axis rotation of PlayerCamera so it is aligned with the MainCamera orientation on the y-axis
-        _cameraTransform.SetLocalPositionAndRotation(_cameraTransform.localPosition, 
-                                                     Quaternion.Euler(0 ,_mainCameraRef.localRotation.eulerAngles.y, 0));
+        inputTranslator.OnMovementEvent += HandleMovement;
+        inputTranslator.OnMousePrimaryInteractionEvent += HandleMousePrimaryInteraction;
     }
     private void OnDestroy()
     {
-        _inputTranslator.OnMovementEvent -= HandleMovement;
-        _inputTranslator.OnMousePrimaryInteractionEvent -= HandleMousePrimaryInteraction;
+        inputTranslator.OnMovementEvent -= HandleMovement;
+        inputTranslator.OnMousePrimaryInteractionEvent -= HandleMousePrimaryInteraction;
     }
 
     private void FixedUpdate()
     {
         MovePlayer();
-        if (!IsGrounded()) _playerRigidbody.AddForce(-9.8f * Vector3.up, ForceMode.Impulse);
+
+        if (!IsGrounded())
+        {
+            playerRigidbody.AddForce(-9.8f * Vector3.up, ForceMode.Impulse);
+        }
     }
 
     public bool IsGrounded()
     {
-        return Physics.BoxCast(transform.position, _groundCheckBoxDimensions, Vector3.down, transform.rotation, _groundCheckBoxHeight);
+        return Physics.BoxCast(transform.position, groundCheckBoxDimensions, Vector3.down, transform.rotation, groundCheckBoxHeight);
     }
     private void MovePlayer()
     {
-        Vector3 forwardVector = _cameraTransform.forward.normalized;
-        Vector3 rightVector = _cameraTransform.right.normalized;
-        Vector3 targetVel = (_playerLocomotion.y * _forwardSpeedMultiplier * _playerSpeed * forwardVector)
-                              + (_playerLocomotion.x * _strafeSpeedMultiplier * _playerSpeed * rightVector)
-                              + (Vector3.up * _playerRigidbody.linearVelocity.y);
-        _playerRigidbody.AddForce(targetVel - _playerRigidbody.linearVelocity, ForceMode.VelocityChange);
+        Vector3 forwardVector = mainCameraRef.forward;
+        forwardVector.y = 0f;
+        forwardVector = forwardVector.normalized;
+
+        Vector3 rightVector = mainCameraRef.right;
+        rightVector.y = 0f;
+        rightVector = rightVector.normalized;
+        
+        Vector3 targetVel = (playerLocomotion.y * forwardSpeedMultiplier * playerSpeed * forwardVector)
+                          + (playerLocomotion.x * strafeSpeedMultiplier * playerSpeed * rightVector)
+                          + (Vector3.up * playerRigidbody.linearVelocity.y);
+
+        playerRigidbody.AddForce(targetVel - playerRigidbody.linearVelocity, ForceMode.VelocityChange);
     }
 
     public void HandleMovement(Vector2 locomotion)
     {
-        _playerLocomotion = locomotion;
+        playerLocomotion = locomotion;
 
         if (Mathf.Abs(locomotion.x) > 0)
         {
@@ -122,7 +128,7 @@ public class Player : MonoBehaviour
 
     public void HandleMousePrimaryInteraction()
     {
-        switch (_tempoManager.CheckHitQuality())
+        switch (tempoManager.CheckHitQuality())
         {
             case HIT_QUALITY.EXCELLENT:
                 Debug.Log("EXCELLENT");
@@ -137,13 +143,15 @@ public class Player : MonoBehaviour
                 Debug.Log("MISS");
                 break;
         };
+
+        ProjectileAttack();
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position + (Vector3.down * _groundCheckBoxHeight), _groundCheckBoxDimensions);
+        Gizmos.DrawWireCube(transform.position + (Vector3.down * groundCheckBoxHeight), groundCheckBoxDimensions);
     }
 
-    private void mouseLeftClick(InputAction.CallbackContext context) //Projectile Attack
+    private void ProjectileAttack()
     {
         if (!isAttackCooldown)
         {
@@ -171,7 +179,7 @@ public class Player : MonoBehaviour
     }
     public void closeMiniGame() { miniGameOpened = false; }
 
-    private void mouseRightClick(InputAction.CallbackContext context) //Special Attack
+    private void OpenMinigame()
     {
         //ISSUE: Determine type of weapon being used, and open the corresponding mini-game.
         if (!miniGameOpened)

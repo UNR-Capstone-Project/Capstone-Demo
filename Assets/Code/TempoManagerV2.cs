@@ -5,7 +5,7 @@ public class TempoManagerV2 : MonoBehaviour
 {
     public enum HIT_QUALITY
     {
-        MISS = 0,
+        MISS,
         BAD,
         GOOD,
         EXCELLENT

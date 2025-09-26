@@ -5,17 +5,26 @@ public class BillboardManager : MonoBehaviour
 {
     private GameObject[] _billboardTransforms;
     private Transform cameraPos;
-
     void Start()
     {
-        cameraPos = Camera.main.transform;
-
-        _billboardTransforms = GameObject.FindGameObjectsWithTag("Billboard");
-        float cameraXRotation = cameraPos.rotation.eulerAngles.x;
-        float cameraYRotation = cameraPos.rotation.eulerAngles.y;
-        foreach (GameObject gameObjects in _billboardTransforms)
+        if (Camera.main != null)
         {
-            gameObjects.transform.rotation = Quaternion.Euler(cameraXRotation, cameraYRotation, 0f);
+            cameraPos = Camera.main.transform;
+
+
+            _billboardTransforms = GameObject.FindGameObjectsWithTag("Billboard");
+            float cameraXRotation = cameraPos.rotation.eulerAngles.x;
+            float cameraYRotation = cameraPos.rotation.eulerAngles.y;
+            float cameraZRotation = cameraPos.rotation.eulerAngles.z;
+
+            foreach (GameObject gameObjects in _billboardTransforms)
+            {
+                gameObjects.transform.rotation = Quaternion.Euler(cameraXRotation, 45f, 0f);
+            }
+        }
+        else
+        {
+            Debug.Log("Main camera was not found!");
         }
     }
 }
