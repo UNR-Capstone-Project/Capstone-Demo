@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3291337240184146355}
   - component: {fileID: 5910230114369679224}
   m_Layer: 5
-  m_Name: RawImage
+  m_Name: MetronomeImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 2713920907757708274}
   - component: {fileID: 7966699270862996379}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: HitQualityText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

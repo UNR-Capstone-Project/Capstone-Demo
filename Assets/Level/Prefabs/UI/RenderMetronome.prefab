@@ -310,6 +310,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1728361818637656738, guid: 8d3c33999cc87a348a63d63b95de75e9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5457901414622121435, guid: 8d3c33999cc87a348a63d63b95de75e9, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -363,6 +367,10 @@ PrefabInstance:
       value: Metronome
       objectReference: {fileID: 0}
     - target: {fileID: 7517663788444344910, guid: 8d3c33999cc87a348a63d63b95de75e9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7670074415268076155, guid: 8d3c33999cc87a348a63d63b95de75e9, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
