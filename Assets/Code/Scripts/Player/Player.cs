@@ -7,16 +7,14 @@ using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
+    //----------Variables----------
+
     //Player Movement
     private Vector2 playerLocomotion = Vector2.zero;
+
     [SerializeField] private InputTranslator inputTranslator;
-    
-    private Transform mainCameraRef;
-    private TempoManagerV2 tempoManager;
-    private Rigidbody playerRigidbody;
-    private float strafeSpeedMultiplier = 1;
-    private float forwardSpeedMultiplier = 1;
-    [SerializeField] float playerSpeed = 100;
+    [SerializeField] private float playerGravity = 9.8f;
+    [SerializeField] private float playerSpeed = 10;
     [SerializeField] private Vector3 groundCheckBoxDimensions;
     [SerializeField] private float groundCheckBoxHeight;
 
@@ -28,48 +26,45 @@ public class Player : MonoBehaviour
     public GameObject playerSprite;
     public GameObject fireballPrefab;
     public GameObject musicMiniGamePrefab;
-    private Animator playerAnimator;
+
+    private TempoManagerV2 tempoManager;
+    private Transform mainCameraRef;
+    private Rigidbody playerRigidbody;
     private SpriteRenderer playerSpriteRenderer;
+    private Animator playerAnimator;
 
     //Player Attacking
-    private bool isAttackCooldown = false;
     public Color flashColor = Color.red;
+
+    private bool isAttackCooldown = false;
     private Color originalColor;
     private float flashDuration = 0.2f;
-
     private Quaternion playerRotation;
 
     //Minigame Variables
     private bool miniGameOpened = false;
 
+    //----------End Variables----------
+
     private void Awake()
     {
+        //Get Components
+        mainCameraRef = Camera.main.transform;
+        tempoManager = GameObject.Find("TempoManager").GetComponent<TempoManagerV2>();
         playerAnimator = playerSprite.GetComponent<Animator>();
         playerSpriteRenderer = playerSprite.GetComponent<SpriteRenderer>();
-        originalColor = playerSpriteRenderer.material.GetColor("_TintColor");
-
-        /*
-        leftClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/leftButton");
-        leftClickAction.performed += mouseLeftClick;
-        leftClickAction.Enable();
-
-        rightClickAction = new InputAction(type: InputActionType.Button, binding: "<Mouse>/rightButton");
-        rightClickAction.performed += mouseRightClick;
-        rightClickAction.Enable();
-        */
-
-        //playerRotation = Quaternion.Euler(0f, 45f, 0f);
         playerRigidbody = GetComponent<Rigidbody>();
-        tempoManager = GameObject.Find("TempoManager").GetComponent<TempoManagerV2>();
-        mainCameraRef = Camera.main.transform;
+        originalColor = playerSpriteRenderer.material.GetColor("_TintColor");
     }
     private void Start()
     {
+        //Hook up input signals
         inputTranslator.OnMovementEvent += HandleMovement;
         inputTranslator.OnMousePrimaryInteractionEvent += HandleMousePrimaryInteraction;
     }
     private void OnDestroy()
     {
+        //Signal cleaup
         inputTranslator.OnMovementEvent -= HandleMovement;
         inputTranslator.OnMousePrimaryInteractionEvent -= HandleMousePrimaryInteraction;
     }
@@ -80,7 +75,7 @@ public class Player : MonoBehaviour
 
         if (!IsGrounded())
         {
-            playerRigidbody.AddForce(-9.8f * Vector3.up, ForceMode.Impulse);
+            playerRigidbody.AddForce(playerGravity * Vector3.down, ForceMode.Acceleration);
         }
     }
 
@@ -98,8 +93,8 @@ public class Player : MonoBehaviour
         rightVector.y = 0f;
         rightVector = rightVector.normalized;
         
-        Vector3 targetVel = (playerLocomotion.y * forwardSpeedMultiplier * playerSpeed * forwardVector)
-                          + (playerLocomotion.x * strafeSpeedMultiplier * playerSpeed * rightVector)
+        Vector3 targetVel = (playerLocomotion.y * playerSpeed * forwardVector)
+                          + (playerLocomotion.x * playerSpeed * rightVector)
                           + (Vector3.up * playerRigidbody.linearVelocity.y);
 
         playerRigidbody.AddForce(targetVel - playerRigidbody.linearVelocity, ForceMode.VelocityChange);
@@ -109,6 +104,7 @@ public class Player : MonoBehaviour
     {
         playerLocomotion = locomotion;
 
+        //Flip player
         if (Mathf.Abs(locomotion.x) > 0)
         {
             Vector3 currentScale = playerSprite.transform.localScale;
@@ -116,7 +112,8 @@ public class Player : MonoBehaviour
             playerSprite.transform.localScale = currentScale;
         }
 
-        if (locomotion.x != 0 || locomotion.y != 0) //Player is running
+        //Animate player
+        if (locomotion.x != 0 || locomotion.y != 0)
         {
             playerAnimator.SetBool("isRunning", true);
         }

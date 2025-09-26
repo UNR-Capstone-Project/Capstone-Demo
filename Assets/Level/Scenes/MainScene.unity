@@ -23,8 +23,8 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.075649686, g: 0.083416335, b: 0.18867922, a: 1}
   m_AmbientEquatorColor: {r: 0.07618539, g: 0.084376216, b: 0.1878208, a: 1}
   m_AmbientGroundColor: {r: 0.33962262, g: 0.31653106, b: 0.30277675, a: 1}
-  m_AmbientIntensity: 1
-  m_AmbientMode: 1
+  m_AmbientIntensity: 0.5
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 88d6b0eb625a7a84e8e71b848dade103, type: 2}
   m_HaloStrength: 0.5
@@ -655,11 +655,6 @@ Transform:
   - {fileID: 158954291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &785188403 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 981727852968851849, guid: 0f0c3af5a09ca4f4cb01b94a1b47b2e6, type: 3}
-  m_PrefabInstance: {fileID: 1869361464}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &864783371 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 415338203038042998, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
@@ -1043,6 +1038,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6633600097475282494, guid: 0f0c3af5a09ca4f4cb01b94a1b47b2e6, type: 3}
+      propertyPath: TrackerSettings.PositionDamping.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6633600097475282494, guid: 0f0c3af5a09ca4f4cb01b94a1b47b2e6, type: 3}
       propertyPath: TrackerSettings.PositionDamping.z
       value: 5
       objectReference: {fileID: 0}
@@ -1366,11 +1365,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53a4d4a3bbe4cc14bb16733f2a0de603, type: 3}
---- !u!1 &2140852650 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4323622196322604754, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-  m_PrefabInstance: {fileID: 6115613482342271035}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5303628851554825034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1543,64 +1537,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1170684511954932438, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: m_SlopeLimit
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 2019051602396369572, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: m_Mass
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2019051602396369572, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 2019051602396369572, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: m_Interpolate
+      propertyPath: m_CollisionDetection
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336914877269605693, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: playerSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336914877269605693, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: _playerSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336914877269605693, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: playerSprite
-      value: 
-      objectReference: {fileID: 2140852650}
-    - target: {fileID: 2336914877269605693, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: _cameraTransform
-      value: 
-      objectReference: {fileID: 785188403}
-    - target: {fileID: 2336914877269605693, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: musicMiniGamePrefab
-      value: 
-      objectReference: {fileID: 3030777457210945652, guid: 41e3a6898f0175547aaf1b2d8457eb9f, type: 3}
-    - target: {fileID: 2336914877269605693, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: _groundCheckBoxHeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336914877269605693, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: _groundCheckBoxDimensions.y
-      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2428720641269041060, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4323622196322604754, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: m_TagString
-      value: Billboard
-      objectReference: {fileID: 0}
-    - target: {fileID: 7125107117967364897, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-      propertyPath: m_Intensity
-      value: 0.8
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6737394169162503165, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
