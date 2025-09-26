@@ -2,16 +2,18 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using SoundSystem;
+using Unity.Cinemachine;
 public class initiateGame : MonoBehaviour
 {
     [SerializeField] private GameObject Ground;
     [SerializeField] private GameObject mainCamera;
+    [SerializeField] private CinemachineCamera mainCinemachineCamera;
     [SerializeField] private Volume main3DVolume;
     [SerializeField] private Light mainDirectionalLight;
     [SerializeField] private GameObject mainPlayer;
     
-    [SerializeField] private musicEvent testSong;
-    [SerializeField] private GameObject musicPlayerPrefab;
+    [SerializeField] private musicEvent townSong;
+    
 
     //load all relevant data at start of game
     public void Start()
@@ -30,8 +32,7 @@ public class initiateGame : MonoBehaviour
         Instantiate(main3DVolume);
         Instantiate(mainDirectionalLight);
 
-        //Instantiate(musicPlayerPrefab);
-        musicManager.Instance.playSong(musicPlayerPrefab);
+        musicManager.Instance.playSong(townSong);
         
     }
 

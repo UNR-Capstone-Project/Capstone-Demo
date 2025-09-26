@@ -5,6 +5,8 @@ using SoundSystem;
 [CreateAssetMenu(fileName = "musicManager", menuName = "Scriptable Objects/musicManager")]
 public class musicManager : ScriptableObject
 {
+    private GameObject musicPlayerPrefab;
+    public const int maxLayerCount = 5;
     private static musicManager _instance;
     public static musicManager Instance
     {
@@ -25,58 +27,62 @@ public class musicManager : ScriptableObject
     }
 
     [SerializeField] private float globalMusicVolume;
-    [SerializeField] private List<musicPlayer> activePlayers;
-    [SerializeField] private List<musicPlayer> inactivePlayers; 
+
+    //unsure if these list should instead be queues of some kind, depends on how many players we want in a given scene/level at a time
+    //unsure of memory implications 
+    [SerializeField] private List<musicPlayer> inactivePlayers = new List<musicPlayer>();
     [SerializeField] private musicPlayer currentPlayer;
     [SerializeField] private float crossfadeTime = 0.5f;
 
+    private void Awake()
+    {
+        //attach prefab 
+        musicPlayerPrefab = Resources.Load<GameObject>("musicPlayer");
+    }
+
     public void playSong(musicEvent s)
     {
-        //how should it interact with active and inactive player list
-
-        foreach (musicPlayer Player in activePlayers)
+        if (currentPlayer == null && inactivePlayers.Count == 0)
         {
+            //create a player 
+            GameObject newObject = Instantiate(musicPlayerPrefab);
+            currentPlayer = newObject.GetComponent<musicPlayer>();
+            currentPlayer.setupSong(s);
 
+            //play the music event passed in 
+            currentPlayer.play(s);
         }
-    }
+        else
+        {
+            foreach (musicPlayer Player in inactivePlayers)
+            {
+                if (Player.publicSong == s)
+                {
 
-    public void playSong(GameObject prefab)
-    {
-        var player = Instantiate(prefab);
-        currentPlayer = player.GetComponent<musicPlayer>();
+                }
+            }
+        }
 
-        if (currentPlayer == null) return;
-
-        currentPlayer.play();
-    }
-
-    public void playSong(musicPlayer p)
-    {
-        p.play();
     }
 
     public void stopSong(musicEvent s)
     {
-        //how should it interact with active and inactive player list
+        
+    }
 
-        foreach (musicPlayer Player in activePlayers)
+    public void pauseCurrentSong()
+    {
+        if (currentPlayer == null)
         {
-
+            
         }
     }
 
-    public void stopSong(musicPlayer p)
+    public void unpauseCurrentSong()
     {
-        p.stop();
-    }
-
-    public void stopAllSongs()
-    {
-        foreach (musicPlayer Player in activePlayers)
+        if (currentPlayer == null)
         {
-            Player.stop();
+            
         }
     }
-    
-    
 }

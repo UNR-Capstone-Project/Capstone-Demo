@@ -6,13 +6,8 @@ using SoundSystem;
 public class musicPlayer : MonoBehaviour
 {
     [SerializeField] private double startTime = AudioSettings.dspTime;
-    [SerializeField] private float playerVolume;
+    [SerializeField] private float playerVolume = 1.0f;
     [SerializeField] private musicEvent song;
-
-    //[SerializeField] public musicEvent currentSong; 
-    //ex: 0 = ambient, 1 = tension, 2 = moderate tension, 3 = high tension, 4 = boss fight 
-    //TODO: can change over to enums later probably
-    //[SerializeField] private int prioritySongLayer = 0;
     [SerializeField] private List<AudioSource> songLayers = new List<AudioSource>();
     private Coroutine volumeFadingRoutine = null;
     public List<float> startingSongLayerVolumes = new List<float>();
@@ -24,13 +19,22 @@ public class musicPlayer : MonoBehaviour
         setupLayers();
     }
 
+    public void setupSong(musicEvent givenSong)
+    {
+        song = givenSong;
+        setupLayers();
+    }
+
     public void setupLayers()
     {
-        for (int i = 0; i < song.publicMusicLayers.Length; i++)
+        songLayers.Clear();
+
+        for (int i = 0; i < musicManager.maxLayerCount; i++)
         {
             songLayers.Add(gameObject.AddComponent<AudioSource>());
+            Debug.Log("added Audio Source to a music player");
             songLayers[i].playOnAwake = false;
-            songLayers[i].loop = false;
+            songLayers[i].loop = true;
 
         }
     }
@@ -63,58 +67,69 @@ public class musicPlayer : MonoBehaviour
         
     }
 
-    public void play()
+    public void play(musicEvent inputSong)
     {
         if (song == null) return;
 
-        foreach (var layer in songLayers)
+        for (int i = 0; i < songLayers.Count && i < inputSong.publicMusicLayers.Length; i++)
+        {
+            if (inputSong.publicMusicLayers[i] != null)
+            {
+                songLayers[i].clip = inputSong.publicMusicLayers[i];
+                songLayers[i].Play();
+            }
+            //songLayers[i].PlayScheduled(startTime);
+        }
+
+        /*foreach (var layer in songLayers)
         {
             if (layer == null) continue;
 
-            
+
             layer.outputAudioMixerGroup = song.publicMusicMixerGroup;
             layer.volume = song.publicMusicVolume;
             layer.loop = false;
             layer.PlayScheduled(startTime); //play all layers simultaneously
-        }
+        }*/
     }
 
     public void stop()
     {
         if (song == null) return;
 
-        foreach (var layer in songLayers)
+        /*foreach (var layer in songLayers)
         {
             if (layer == null) continue;
 
             layer.Stop();
-        }
+        }*/
     }
 
     public void pause()
     {
         if (song == null) return;
         
-        foreach (var layer in songLayers)
+        /*foreach (var layer in songLayers)
         {
             if (layer.isPlaying)
             {
                 layer.Pause();
             }
-        }
+        }*/
     }
 
     public void unpause()
     {
+        
         if (song == null) return;
 
-        foreach (var layer in songLayers)
+        /*foreach (var layer in songLayers)
         {
             if (!layer.isPlaying)
             {
                 layer.UnPause();
             }
-        }
+        }*/
     }
 
     public void fadeVolume(float destinationVolume, float fadeTime)
