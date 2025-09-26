@@ -8,7 +8,7 @@ public class CanvasManager : MonoBehaviour
         //Setup UI with main camera.
         Canvas mCanvas = GetComponent<Canvas>();
         mCanvas.worldCamera = Camera.main;
-        mCanvas.planeDistance = 0;
+        mCanvas.planeDistance = 1;
     }
 
     // Update is called once per frame
