@@ -50,16 +50,13 @@ public class musicManager : ScriptableObject
             currentPlayer.setupSong(s);
 
             //play the music event passed in 
-            currentPlayer.play(s);
+            currentPlayer.play();
         }
         else
         {
             foreach (musicPlayer Player in inactivePlayers)
             {
-                if (Player.publicSong == s)
-                {
 
-                }
             }
         }
 
@@ -67,14 +64,16 @@ public class musicManager : ScriptableObject
 
     public void stopSong(musicEvent s)
     {
-        
+        if (currentPlayer == null) return;
+
+        currentPlayer.stop();
     }
 
     public void pauseCurrentSong()
     {
         if (currentPlayer == null)
         {
-            
+            currentPlayer.pause();
         }
     }
 
@@ -82,7 +81,7 @@ public class musicManager : ScriptableObject
     {
         if (currentPlayer == null)
         {
-            
+            currentPlayer.unpause();
         }
     }
 }

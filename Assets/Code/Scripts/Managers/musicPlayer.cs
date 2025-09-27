@@ -13,14 +13,9 @@ public class musicPlayer : MonoBehaviour
     public List<float> startingSongLayerVolumes = new List<float>();
     public musicEvent publicSong => song;
 
-    public void Awake()
-    {
-        if (song == null) return;
-        setupLayers();
-    }
-
     public void setupSong(musicEvent givenSong)
     {
+        //Debug.Log("setupSong called with: " + (givenSong == null ? "NULL" : givenSong.name));
         song = givenSong;
         setupLayers();
     }
@@ -67,55 +62,51 @@ public class musicPlayer : MonoBehaviour
         
     }
 
-    public void play(musicEvent inputSong)
+    public void play()
     {
-        if (song == null) return;
+        //Debug.Log("play() called with song: " + (song == null ? "NULL" : song.name));
 
-        for (int i = 0; i < songLayers.Count && i < inputSong.publicMusicLayers.Length; i++)
+        if (song == null)
         {
-            if (inputSong.publicMusicLayers[i] != null)
-            {
-                songLayers[i].clip = inputSong.publicMusicLayers[i];
-                songLayers[i].Play();
-            }
-            //songLayers[i].PlayScheduled(startTime);
+            Debug.Log("Song in the music player has a null musicEvent");
+            return;
         }
 
-        /*foreach (var layer in songLayers)
+        //iterate through existing layers with audio 
+        for (int i = 0; i < song.publicMusicLayers.Length; i++)
         {
-            if (layer == null) continue;
+            Debug.Log(i);
+            songLayers[i].clip = song.publicMusicLayers[i];
+            songLayers[i].volume = song.publicMusicVolume;
+            songLayers[i].loop = true;
+            songLayers[i].PlayScheduled(startTime);
+        }
 
-
-            layer.outputAudioMixerGroup = song.publicMusicMixerGroup;
-            layer.volume = song.publicMusicVolume;
-            layer.loop = false;
-            layer.PlayScheduled(startTime); //play all layers simultaneously
-        }*/
     }
 
     public void stop()
     {
         if (song == null) return;
 
-        /*foreach (var layer in songLayers)
+        foreach (var layer in songLayers)
         {
             if (layer == null) continue;
 
             layer.Stop();
-        }*/
+        }
     }
 
     public void pause()
     {
         if (song == null) return;
         
-        /*foreach (var layer in songLayers)
+        foreach (var layer in songLayers)
         {
             if (layer.isPlaying)
             {
                 layer.Pause();
             }
-        }*/
+        }
     }
 
     public void unpause()
@@ -123,13 +114,13 @@ public class musicPlayer : MonoBehaviour
         
         if (song == null) return;
 
-        /*foreach (var layer in songLayers)
+        foreach (var layer in songLayers)
         {
             if (!layer.isPlaying)
             {
                 layer.UnPause();
             }
-        }*/
+        }
     }
 
     public void fadeVolume(float destinationVolume, float fadeTime)

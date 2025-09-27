@@ -32,7 +32,7 @@ public class initiateGame : MonoBehaviour
         Instantiate(main3DVolume);
         Instantiate(mainDirectionalLight);
 
-        musicManager.Instance.playSong(townSong);
+        //musicManager.Instance.playSong(townSong);
         
     }
 

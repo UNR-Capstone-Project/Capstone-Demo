@@ -150,11 +150,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::initiateGame
   Ground: {fileID: 8101832517977541958, guid: 5f214e398f4a7fa46a32a2c9b01ff612, type: 3}
   mainCamera: {fileID: 2495053741683933374, guid: ba0fb405a602f744598916e149c1f0c3, type: 3}
+  mainCinemachineCamera: {fileID: 0}
   main3DVolume: {fileID: 1990490750618901672, guid: 9107065a5b8a431458851ec84ae3d39a, type: 3}
   mainDirectionalLight: {fileID: 1688765767307564418, guid: 5016993ecd8495f45b012622aa3c529b, type: 3}
   mainPlayer: {fileID: 2428720641269041060, guid: 460d7e2c9db7d7a4bbfa6f670218ddde, type: 3}
-  testSong: {fileID: 11400000, guid: bcaa9d5a773ddd543957aa2a54b83067, type: 2}
-  musicPlayerPrefab: {fileID: 540828665666748921, guid: 7fe240b820ad1ff4a883409ca355a74b, type: 3}
+  townSong: {fileID: 11400000, guid: bcaa9d5a773ddd543957aa2a54b83067, type: 2}
 --- !u!4 &1270476863
 Transform:
   m_ObjectHideFlags: 0
