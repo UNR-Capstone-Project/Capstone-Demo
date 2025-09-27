@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
 
     //----------End Variables----------
 
-    private void Awake()
+    private void Start()
     {
         //Get Components
         mainCameraRef = Camera.main.transform;
@@ -55,9 +55,7 @@ public class Player : MonoBehaviour
         playerSpriteRenderer = playerSprite.GetComponent<SpriteRenderer>();
         playerRigidbody = GetComponent<Rigidbody>();
         originalColor = playerSpriteRenderer.material.GetColor("_TintColor");
-    }
-    private void Start()
-    {
+
         //Hook up input signals
         inputTranslator.OnMovementEvent += HandleMovement;
         inputTranslator.OnMousePrimaryInteractionEvent += HandleMousePrimaryInteraction;

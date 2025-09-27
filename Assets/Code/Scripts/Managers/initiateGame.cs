@@ -2,42 +2,44 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using SoundSystem;
+using Unity.Cinemachine;
 public class initiateGame : MonoBehaviour
 {
-    [SerializeField] private GameObject Ground;
+    [SerializeField] private GameObject mainManager;
+    [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject mainCamera;
-    [SerializeField] private Volume main3DVolume;
+    [SerializeField] private Volume mainGlobalVolume;
     [SerializeField] private Light mainDirectionalLight;
     [SerializeField] private GameObject mainPlayer;
     
-    [SerializeField] private musicEvent testSong;
-    [SerializeField] private GameObject musicPlayerPrefab;
+    //[SerializeField] private musicEvent townSong;
+    
 
-    //load all relevant data at start of game
+    //Loads all relevant data at start of each level.
     public void Start()
     {
         bindObjects();
 
-        //show a loading screen
+        //ISSUE: Show loading screen!
     }
 
     private void bindObjects()
     {
-        //bind objects to prefabs
-        Instantiate(Ground);
+        //Bind objects to prefabs
+
+        Instantiate(mainManager);
+        Instantiate(mainCanvas);
         Instantiate(mainPlayer);
         Instantiate(mainCamera);
-        Instantiate(main3DVolume);
+        Instantiate(mainGlobalVolume);
         Instantiate(mainDirectionalLight);
 
-        //Instantiate(musicPlayerPrefab);
-        musicManager.Instance.playSong(musicPlayerPrefab);
-        
+        //musicManager.Instance.playSong(townSong);
     }
 
     private void createObjects()
     {
-        Debug.Log("Function here will be rewritten later if needing to intialize 3rd party servics/other services etc. Or tweak object settings after instantiation.");
+        Debug.Log("Function here will be rewritten later if needing to initialize 3rd party services/other services etc. Or tweak object settings after instantiation.");
     }
 
     private void backgroundGamePreparations()

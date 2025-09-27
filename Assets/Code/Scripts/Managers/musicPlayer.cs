@@ -6,31 +6,30 @@ using SoundSystem;
 public class musicPlayer : MonoBehaviour
 {
     [SerializeField] private double startTime = AudioSettings.dspTime;
-    [SerializeField] private float playerVolume;
+    [SerializeField] private float playerVolume = 1.0f;
     [SerializeField] private musicEvent song;
-
-    //[SerializeField] public musicEvent currentSong; 
-    //ex: 0 = ambient, 1 = tension, 2 = moderate tension, 3 = high tension, 4 = boss fight 
-    //TODO: can change over to enums later probably
-    //[SerializeField] private int prioritySongLayer = 0;
     [SerializeField] private List<AudioSource> songLayers = new List<AudioSource>();
     private Coroutine volumeFadingRoutine = null;
     public List<float> startingSongLayerVolumes = new List<float>();
     public musicEvent publicSong => song;
 
-    public void Awake()
+    public void setupSong(musicEvent givenSong)
     {
-        if (song == null) return;
+        //Debug.Log("setupSong called with: " + (givenSong == null ? "NULL" : givenSong.name));
+        song = givenSong;
         setupLayers();
     }
 
     public void setupLayers()
     {
-        for (int i = 0; i < song.publicMusicLayers.Length; i++)
+        songLayers.Clear();
+
+        for (int i = 0; i < musicManager.maxLayerCount; i++)
         {
             songLayers.Add(gameObject.AddComponent<AudioSource>());
+            Debug.Log("added Audio Source to a music player");
             songLayers[i].playOnAwake = false;
-            songLayers[i].loop = false;
+            songLayers[i].loop = true;
 
         }
     }
@@ -65,18 +64,24 @@ public class musicPlayer : MonoBehaviour
 
     public void play()
     {
-        if (song == null) return;
+        //Debug.Log("play() called with song: " + (song == null ? "NULL" : song.name));
 
-        foreach (var layer in songLayers)
+        if (song == null)
         {
-            if (layer == null) continue;
-
-            
-            layer.outputAudioMixerGroup = song.publicMusicMixerGroup;
-            layer.volume = song.publicMusicVolume;
-            layer.loop = false;
-            layer.PlayScheduled(startTime); //play all layers simultaneously
+            Debug.Log("Song in the music player has a null musicEvent");
+            return;
         }
+
+        //iterate through existing layers with audio 
+        for (int i = 0; i < song.publicMusicLayers.Length; i++)
+        {
+            Debug.Log(i);
+            songLayers[i].clip = song.publicMusicLayers[i];
+            songLayers[i].volume = song.publicMusicVolume;
+            songLayers[i].loop = true;
+            songLayers[i].PlayScheduled(startTime);
+        }
+
     }
 
     public void stop()
@@ -106,6 +111,7 @@ public class musicPlayer : MonoBehaviour
 
     public void unpause()
     {
+        
         if (song == null) return;
 
         foreach (var layer in songLayers)
