@@ -136,6 +136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 31369443905719066}
+  - component: {fileID: 7467063899727725021}
   m_Layer: 7
   m_Name: RenderMetronome
   m_TagString: Untagged
@@ -161,6 +162,19 @@ Transform:
   - {fileID: 8365406266337608173}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7467063899727725021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4603908624531791749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ff7f9b9c75ff7a4db65d87ba98bda9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  pendulumObject: {fileID: 3905710050136705331}
 --- !u!1 &5566484175808646855
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +185,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8173584754260670635}
   - component: {fileID: 482510686931701902}
-  - component: {fileID: 5496844577518918151}
   - component: {fileID: 1976550338180074828}
   m_Layer: 7
   m_Name: RenderCamera
@@ -246,14 +259,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &5496844577518918151
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5566484175808646855}
-  m_Enabled: 1
 --- !u!114 &1976550338180074828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,6 +391,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 66877017911404531}
   m_SourcePrefab: {fileID: 100100000, guid: 8d3c33999cc87a348a63d63b95de75e9, type: 3}
+--- !u!1 &3905710050136705331 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1728361818637656738, guid: 8d3c33999cc87a348a63d63b95de75e9, type: 3}
+  m_PrefabInstance: {fileID: 2436308251485973393}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4814430174795141989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7142651620625135860, guid: 8d3c33999cc87a348a63d63b95de75e9, type: 3}

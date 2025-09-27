@@ -30,9 +30,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3591243919889631230}
+  - {fileID: 6587462203573440916}
   - {fileID: 9008395294179004849}
   - {fileID: 3323464753686540311}
-  - {fileID: 6587462203573440916}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5099793167834656456
@@ -124,7 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27b935cf4de731f47ae8416bf0d3f114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TempoManagerV2
-  _timeBetweenBeats: 0
+  RenderMetronome: {fileID: 7268934246999311627}
+  _tempo: 60
 --- !u!82 &7413370735531543187
 AudioSource:
   m_ObjectHideFlags: 0
@@ -136,7 +137,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 67c3f01782b45414a96687e5412a6c02, type: 3}
+  m_Resource: {fileID: 8300000, guid: f0daa2baca71431419f5eacd78c64af8, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -360,5 +361,10 @@ PrefabInstance:
 --- !u!4 &6587462203573440916 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 31369443905719066, guid: f4c0953c4f20de340ba6c0f87ec71c90, type: 3}
+  m_PrefabInstance: {fileID: 6558419386955455118}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7268934246999311627 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4603908624531791749, guid: f4c0953c4f20de340ba6c0f87ec71c90, type: 3}
   m_PrefabInstance: {fileID: 6558419386955455118}
   m_PrefabAsset: {fileID: 0}

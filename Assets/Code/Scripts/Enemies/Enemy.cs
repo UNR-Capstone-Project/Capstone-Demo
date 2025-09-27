@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        playerTarget = GameObject.Find("Player");
+        playerTarget = GameObject.FindGameObjectWithTag("Player");
         if (playerTarget == null)
         {
             Debug.Log("Enemy could not find the Player Game Object.");
@@ -152,7 +152,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator attackPlayer()
     {
-        GameObject player = GameObject.Find("Player");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         if (player != null)
         {

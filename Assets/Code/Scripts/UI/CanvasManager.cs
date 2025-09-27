@@ -1,8 +1,12 @@
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CanvasManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [SerializeField] private TextMeshProUGUI hitQualityText;
+
     void Start()
     {
         //Setup UI with main camera.
@@ -11,7 +15,11 @@ public class CanvasManager : MonoBehaviour
         mCanvas.planeDistance = 1;
     }
 
-    // Update is called once per frame
+    public void UpdateHitQualityText(string quality)
+    {
+        hitQualityText.GetComponent<TextMeshProUGUI>().text = quality;
+    }
+
     void Update()
     {
         

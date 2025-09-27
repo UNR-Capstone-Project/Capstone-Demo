@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Note
   - Billboard
+  - MainCanvas
   layers:
   - Default
   - TransparentFX

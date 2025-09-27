@@ -11,9 +11,6 @@ public class initiateGame : MonoBehaviour
     [SerializeField] private Volume mainGlobalVolume;
     [SerializeField] private Light mainDirectionalLight;
     [SerializeField] private GameObject mainPlayer;
-    
-    //[SerializeField] private musicEvent townSong;
-    
 
     //Loads all relevant data at start of each level.
     public void Start()
@@ -33,8 +30,6 @@ public class initiateGame : MonoBehaviour
         Instantiate(mainCamera);
         Instantiate(mainGlobalVolume);
         Instantiate(mainDirectionalLight);
-
-        //musicManager.Instance.playSong(townSong);
     }
 
     private void createObjects()
